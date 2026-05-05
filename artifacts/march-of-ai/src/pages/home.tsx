@@ -1,7 +1,9 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/navbar";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { useBrand } from "@/lib/brand";
 import {
   ArrowRight, ArrowLeft, Download, Mail, AlertTriangle,
   Layers, Users, Database, Shield, Zap, XCircle, CheckCircle2
@@ -68,6 +70,7 @@ function StatCard({ value, label, source }: { value: string; label: string; sour
 /* ─── Individual pages ─────────────────────────────────────── */
 
 function HeroPage() {
+  const brand = useBrand();
   return (
     <PageShell>
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
@@ -98,21 +101,17 @@ function HeroPage() {
               <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
             </Button>
             <Button size="lg" variant="outline" className="text-base h-14 px-8 rounded-full border-border hover:bg-secondary" data-testid="button-contact">
-              <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
+              <Mail className="mr-2 h-5 w-5" /> {brand.contactCtaLabel}
             </Button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }}
-            className="pt-8 border-t border-border flex items-center justify-between"
+            className="pt-8 border-t border-border"
           >
-            <div>
-              <p className="text-sm font-medium">Presented by</p>
-              <p className="text-xl font-display font-semibold mt-1">Tim Barnes <span className="text-muted-foreground font-normal text-base">| WeDo AI</span></p>
-            </div>
-            <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium">Delivered at</p>
-              <p className="text-base text-muted-foreground mt-1">Australian Retirement Trust</p>
-            </div>
+            <p className="text-sm font-medium">Presented by</p>
+            <p className="text-xl font-display font-semibold mt-1">
+              {brand.presenter.name} <span className="text-muted-foreground font-normal text-base">| {brand.presenter.role}</span>
+            </p>
           </motion.div>
         </div>
       </div>
@@ -535,32 +534,31 @@ function Section06Page() {
 }
 
 function ContactPage() {
+  const brand = useBrand();
   return (
     <PageShell>
       <div className="flex-1 flex items-center justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
-            <div className="mb-8">
-              <span className="text-4xl font-display font-bold tracking-tight">
-                WeDo <span className="text-primary font-light">| AI</span>
-              </span>
+            <div className="mb-8 flex justify-center">
+              <Logo size="hero" />
             </div>
             <h2 className="text-5xl md:text-6xl font-bold mb-6">Questions.</h2>
             <p className="text-2xl text-muted-foreground mb-10">
-              Tim Barnes <span className="mx-2 text-border">|</span> AI and Automation Expert
+              {brand.presenter.name} <span className="mx-2 text-border">|</span> {brand.presenter.role}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <Button size="lg" className="rounded-full px-8 h-12 w-full sm:w-auto" data-testid="button-contact-cta">
-                <Mail className="mr-2 h-4 w-4" /> Contact Tim
+                <Mail className="mr-2 h-4 w-4" /> {brand.contactCtaLabel}
               </Button>
               <Button size="lg" variant="outline" className="rounded-full px-8 h-12 w-full sm:w-auto" asChild>
-                <a href="https://wedoai.com.au" target="_blank" rel="noopener noreferrer" data-testid="link-wedoai">
-                  wedoai.com.au <ArrowRight className="ml-2 h-4 w-4" />
+                <a href={brand.contactHref} target="_blank" rel="noopener noreferrer" data-testid="link-brand">
+                  {brand.contactDisplayUrl} <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
             </div>
             <p className="text-sm text-muted-foreground border-t border-border pt-8">
-              © 2026 WeDo AI. Delivered at Australian Retirement Trust Executive Insights Forum.
+              {brand.footer}
             </p>
           </motion.div>
         </div>
