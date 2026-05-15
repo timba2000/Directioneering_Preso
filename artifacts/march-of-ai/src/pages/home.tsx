@@ -3,23 +3,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { useBrand } from "@/lib/brand";
 import {
   ArrowRight, ArrowLeft, Download, Mail, AlertTriangle, Camera,
-  Layers, Database, Shield, Zap, XCircle, CheckCircle2,
+  Layers, Database, Shield, XCircle, CheckCircle2,
   TrendingUp, Workflow, GraduationCap, Network, Quote, Sparkles,
-  MessageSquare, FileText, Briefcase, Phone, Building2, FileBadge,
+  MessageSquare, FileText, Briefcase,
+  Lightbulb, ListChecks, Search, Palette, Rocket,
+  Lock, Bot, ShieldCheck, Clock,
 } from "lucide-react";
 
 /* ─── Page registry ───────────────────────────────────────────────────── */
 
 const NAV_SECTIONS = [
-  { label: "01", title: "The Problem",    pageIndex: 1 },
-  { label: "02", title: "Deployability",  pageIndex: 3 },
-  { label: "03", title: "Prerequisite",   pageIndex: 7 },
-  { label: "04", title: "Three Lenses",   pageIndex: 12 },
-  { label: "05", title: "Five Questions", pageIndex: 17 },
-  { label: "06", title: "Outlook",        pageIndex: 19 },
+  { label: "01", title: "The Problem",     pageIndex: 2 },
+  { label: "02", title: "Deployability",   pageIndex: 4 },
+  { label: "03", title: "Readiness",       pageIndex: 6 },
+  { label: "04", title: "Three Lenses",    pageIndex: 9 },
+  { label: "05", title: "Five Questions",  pageIndex: 14 },
+  { label: "06", title: "Outlook",         pageIndex: 16 },
 ];
 
 /* ─── Animation primitives ────────────────────────────────────────────── */
@@ -54,7 +55,7 @@ function BackdropOrbs({ dark = false }: { dark?: boolean }) {
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className={`absolute -top-32 -right-32 h-[28rem] w-[28rem] rounded-full blur-3xl ${dark ? "bg-primary-foreground/10" : "bg-primary/10"}`} />
       <div className={`absolute -bottom-40 -left-32 h-[24rem] w-[24rem] rounded-full blur-3xl ${dark ? "bg-accent/15" : "bg-accent/8"}`} />
-      <div className="absolute inset-0 opacity-[0.025] [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:22px_22px]" />
+      <div className="absolute inset-0 opacity-[0.04] [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:22px_22px]" />
     </div>
   );
 }
@@ -83,19 +84,6 @@ function StatCard({ value, label, source, delay = 0 }: { value: string; label: s
       <div className="relative text-[10px] text-muted-foreground uppercase tracking-[0.18em] mt-auto border-t border-border pt-4">
         {source}
       </div>
-    </motion.div>
-  );
-}
-
-function SoloStat({ value, label, source }: { value: string; label: string; source: string }) {
-  return (
-    <motion.div {...fadeUp(0.1)} className="relative">
-      <div className="relative text-[10rem] md:text-[14rem] lg:text-[18rem] font-display font-bold text-primary tracking-tighter leading-[0.8] mb-6">
-        {value}
-        <span className="absolute -top-4 right-0 h-3 w-3 rounded-full bg-accent" />
-      </div>
-      <p className="text-2xl md:text-3xl font-display max-w-2xl leading-snug">{label}</p>
-      <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mt-6">{source}</p>
     </motion.div>
   );
 }
@@ -146,7 +134,6 @@ function ChapterDivider({ number, title, subtitle }: { number: string; title: st
 /* ─── Pages ──────────────────────────────────────────────────────────── */
 
 function HeroPage() {
-  const brand = useBrand();
   return (
     <PageShell>
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
@@ -164,20 +151,72 @@ function HeroPage() {
             {...fadeUp(0.16)}
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed"
           >
-            A calibration tool, not a tour. Three lenses, five questions, and one prerequisite most organisations do not have.
+            A calibration tool, not a tour. Three lenses, five questions, and one readiness gap most organisations have not closed.
           </motion.p>
           <motion.div {...fadeUp(0.24)} className="flex flex-col sm:flex-row gap-4 mb-20">
             <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" data-testid="button-download">
               <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
             </Button>
             <Button size="lg" variant="outline" className="text-base h-14 px-8 rounded-full border-border hover:bg-secondary" data-testid="button-contact">
-              <Mail className="mr-2 h-5 w-5" /> {brand.contactCtaLabel}
+              <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
             </Button>
           </motion.div>
           <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-border">
             <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-2">Presented by</p>
             <p className="text-2xl font-display font-semibold">
-              {brand.presenter.name} <span className="text-muted-foreground font-normal text-base ml-2">{brand.presenter.role}</span>
+              Tim Barnes <span className="text-muted-foreground font-normal text-base ml-2">AI and Automation Expert · WeDoAI</span>
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </PageShell>
+  );
+}
+
+function HowIBuiltThisPage() {
+  const steps = [
+    { num: "01", label: "Brainstormed", time: "30 min", icon: Lightbulb },
+    { num: "02", label: "Structured",   time: "15 min", icon: ListChecks },
+    { num: "03", label: "Researched",   time: "10 min", icon: Search },
+    { num: "04", label: "Designed",     time: "1 hour", icon: Palette },
+    { num: "05", label: "Shipped",      time: "30 min", icon: Rocket },
+  ];
+  return (
+    <PageShell>
+      <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div {...fadeUp(0)} className="mb-12 max-w-3xl">
+            <ChapterTag label="Meta / Behind this talk" />
+            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-4 tracking-tight leading-[1.05]">
+              How I built this.
+            </h3>
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+              Me, my phone, and a handful of AI agents. <span className="text-foreground font-medium">~2.5 hours.</span>
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-10">
+            {steps.map((s, i) => (
+              <motion.div
+                key={s.num}
+                {...fadeUp(0.08 * i)}
+                whileHover={{ y: -3 }}
+                className="relative rounded-2xl bg-card border border-card-border p-5 overflow-hidden"
+              >
+                <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-primary/8" />
+                <div className="relative">
+                  <p className="text-3xl font-display font-bold text-primary/30 tracking-tighter mb-2">{s.num}</p>
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
+                    <s.icon className="h-4 w-4" />
+                  </span>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-1">{s.label}</p>
+                  <p className="text-base font-semibold">{s.time}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div {...fadeUp(0.5)} className="rounded-3xl bg-secondary border border-secondary-border p-7 md:p-8">
+            <p className="text-lg md:text-xl font-display leading-snug">
+              <span className="text-accent font-semibold">Easy</span> for one person with AI agents. <span className="text-foreground/60">/</span> <span className="text-primary font-semibold">Hard</span> at enterprise scale. That gap is what this talk is about.
             </p>
           </motion.div>
         </div>
@@ -208,7 +247,7 @@ function SignalPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <StatCard value="95%" label="of GenAI pilots fail to scale." source="MIT, 2025" delay={0.1} />
             <StatCard value="42%" label="of companies abandoned most AI initiatives in 2025, up from 17% the year prior." source="S&P Global" delay={0.18} />
-            <StatCard value="5%"  label="achieve rapid revenue acceleration from AI investments." source="MIT" delay={0.26} />
+            <StatCard value="5%"  label="of companies achieve rapid revenue acceleration." source="MIT" delay={0.26} />
           </div>
         </div>
       </div>
@@ -221,119 +260,69 @@ function Section02Divider() {
 }
 
 function CapabilityGapPage() {
-  const demo = ["Clean two-page sample", "Curated test data", "No edge cases", "No regulatory tail", "Looks magical"];
-  const prod = ["200-page contract with footnotes", "Real customer data, messy and joined", "Edge cases drive 30% of the value", "Regulator may be reading it", "10x to 100x harder than the demo"];
-  return (
-    <PageShell>
-      <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp(0)} className="mb-12 max-w-3xl">
-            <ChapterTag label="02 / The Gap" />
-            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-4 tracking-tight leading-[1.05]">
-              The capability deployability gap.
-            </h3>
-          </motion.div>
-          <div className="grid md:grid-cols-2 gap-5 mb-10">
-            <motion.div {...fadeUp(0.1)} className="bg-card border border-card-border rounded-3xl p-8 md:p-10">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="h-10 w-10 rounded-full bg-destructive/10 flex items-center justify-center">
-                  <XCircle className="h-5 w-5 text-destructive" />
-                </span>
-                <h4 className="text-xs font-mono uppercase tracking-[0.22em] text-muted-foreground">The Demo</h4>
-              </div>
-              <ul className="space-y-3">
-                {demo.map((d) => (
-                  <li key={d} className="flex items-start gap-3 text-lg">
-                    <span className="mt-2.5 h-1.5 w-1.5 rounded-full bg-muted-foreground shrink-0" />{d}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.div {...fadeUp(0.18)} className="bg-primary text-primary-foreground rounded-3xl p-8 md:p-10 shadow-lg">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="h-10 w-10 rounded-full bg-primary-foreground/15 flex items-center justify-center">
-                  <CheckCircle2 className="h-5 w-5 text-accent" />
-                </span>
-                <h4 className="text-xs font-mono uppercase tracking-[0.22em] text-primary-foreground/70">In Production</h4>
-              </div>
-              <ul className="space-y-3">
-                {prod.map((p) => (
-                  <li key={p} className="flex items-start gap-3 text-lg">
-                    <span className="mt-2.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />{p}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-          <PullQuote>"Money disappears in the gap. So do executive careers."</PullQuote>
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
-function PilotsStallPage() {
-  return (
-    <PageShell>
-      <div className="flex-1 flex items-center justify-center px-4 pt-28 pb-12">
-        <div className="container mx-auto max-w-5xl">
-          <motion.div {...fadeUp(0)} className="mb-10">
-            <ChapterTag label="02 / Why pilots stall" />
-            <h3 className="text-3xl md:text-5xl font-display font-bold mt-6 tracking-tight leading-[1.1] max-w-3xl">
-              Why pilots stall before they reach production.
-            </h3>
-          </motion.div>
-          <SoloStat
-            value="31%"
-            label="of AI use cases reach full production. Demo environments use clean data, predictable inputs, and forgiving users. Production rewards none of that."
-            source="Acrosolve, 2026"
-          />
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
-function DeployablePage() {
-  const chatbot = ["Q&A in isolation", "Answers a single question", "No memory of context", "Cannot take action", "User does the integration"];
-  const agents  = ["Outcome delivered", "Plans the work", "Holds context across steps", "Executes, checks, retries", "Returns a finished result"];
+  const rows = [
+    { num: "01", label: "Access",    icon: Lock,        demo: "Claude on my phone, no approval",         prod: "AI tools awaiting approval" },
+    { num: "02", label: "Agents",    icon: Bot,         demo: "Computer use, unrestricted",              prod: "Computer use blocked by policy" },
+    { num: "03", label: "Data",      icon: Database,    demo: "Pull from any source on the web",         prod: "No agent access to internal data" },
+    { num: "04", label: "Approvals", icon: ShieldCheck, demo: "One decision-maker, me",                  prod: "Brand, legal, compliance gating" },
+    { num: "05", label: "Time",      icon: Clock,       demo: "2.5 hours",                                prod: "Months" },
+  ];
   return (
     <PageShell>
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp(0)} className="mb-10 max-w-3xl">
-            <ChapterTag label="02 / Deployable" />
-            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 tracking-tight leading-[1.05]">
-              What deployable looks like.
+            <ChapterTag label="02 / The gap" />
+            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-3 tracking-tight leading-[1.05]">
+              The capability deployability gap.
             </h3>
+            <p className="text-lg md:text-xl text-muted-foreground">
+              Same task. <span className="text-foreground font-medium">Different access.</span>
+            </p>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-px bg-border rounded-3xl overflow-hidden">
-            <motion.div {...fadeUp(0.1)} className="bg-background p-8 md:p-12">
-              <h5 className="text-xs font-mono uppercase tracking-[0.22em] text-muted-foreground mb-6">Traditional Chatbot</h5>
-              <ul className="space-y-5">
-                {chatbot.map((c) => (
-                  <li key={c} className="flex items-center gap-3 text-foreground/80 text-lg">
-                    <XCircle className="text-muted-foreground w-5 h-5 shrink-0" /> {c}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.div {...fadeUp(0.18)} className="bg-card p-8 md:p-12 relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 h-40 w-40 bg-primary/5 rounded-full blur-2xl" aria-hidden />
-              <h5 className="text-xs font-mono uppercase tracking-[0.22em] text-primary mb-6">Agents Working Together</h5>
-              <ul className="space-y-5">
-                {agents.map((a) => (
-                  <li key={a} className="flex items-center gap-3 font-medium text-lg">
-                    <Zap className="text-accent w-5 h-5 shrink-0" /> {a}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-          <motion.p {...fadeUp(0.28)} className="mt-8 text-sm uppercase tracking-[0.22em] text-muted-foreground text-center">
-            <Sparkles className="inline h-4 w-4 mr-2 text-accent" />
-            Live side-by-side demonstration triggers here
-          </motion.p>
+
+          <motion.div {...fadeUp(0.1)} className="rounded-3xl border border-card-border bg-card overflow-hidden">
+            {/* Header row */}
+            <div className="grid grid-cols-12 gap-0 px-5 md:px-8 py-4 bg-secondary/40 border-b border-card-border text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="col-span-4 md:col-span-3" />
+              <div className="col-span-4 md:col-span-4 lg:col-span-4 flex items-center gap-2">
+                <XCircle className="h-3 w-3 text-destructive" /> The Demo
+              </div>
+              <div className="col-span-4 md:col-span-5 lg:col-span-5 flex items-center gap-2">
+                <CheckCircle2 className="h-3 w-3 text-accent" /> In Production
+              </div>
+            </div>
+
+            {rows.map((r, i) => (
+              <motion.div
+                key={r.num}
+                {...fadeUp(0.06 + i * 0.04)}
+                className={`grid grid-cols-12 gap-3 md:gap-0 px-5 md:px-8 py-5 items-center ${i < rows.length - 1 ? "border-b border-card-border" : ""}`}
+              >
+                <div className="col-span-12 md:col-span-3 flex items-center gap-3 mb-2 md:mb-0">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
+                    <r.icon className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">{r.num}</p>
+                    <p className="font-display font-semibold text-base">{r.label}</p>
+                  </div>
+                </div>
+                <div className="col-span-6 md:col-span-4 text-sm md:text-base text-muted-foreground pr-3">
+                  {r.demo}
+                </div>
+                <div className="col-span-6 md:col-span-5 text-sm md:text-base text-foreground font-medium pl-3 md:pl-0 border-l md:border-l-0 border-border">
+                  {r.prod}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div {...fadeUp(0.5)} className="mt-8">
+            <PullQuote>
+              Capability is not the gap. <span className="text-primary">Access to capability</span> is.
+            </PullQuote>
+          </motion.div>
         </div>
       </div>
     </PageShell>
@@ -341,15 +330,35 @@ function DeployablePage() {
 }
 
 function Section03Divider() {
-  return <ChapterDivider number="03" title="The prerequisite nobody talks about." subtitle="Before you can evaluate any AI proposal, you need to understand your process as a system." />;
+  return <ChapterDivider number="03" title="The readiness gap nobody talks about." subtitle="Before any AI proposal, your process has to be visible and measurable end-to-end. Most organisations cannot do this." />;
 }
 
 function ProcessFramePage() {
   const pillars = [
-    { icon: Workflow,        tag: "Process",    title: "How value flows", body: "How value flows through your organisation, end to end. The frame inside which everything else sits." },
-    { icon: GraduationCap,   tag: "People",     title: "Educated and capable", body: "Continuous education in what we measure, why it matters, how to read the signal. Not one-time training." },
-    { icon: Database,        tag: "Data",       title: "Joined and measured", body: "Available across silos, governed at the asset level, aligned to the use cases that matter." },
-    { icon: Shield,          tag: "Technology", title: "Integrated and safe", body: "Secure, governed, observable, and built to compose with what you already have." },
+    {
+      icon: Workflow,
+      tag: "Process",
+      title: "Visible in real time",
+      body: "Not BPMN diagrams filed in your process registry. Process intelligence, seen live. Where work flows, where rework hides, what task and end-to-end handle times actually are.",
+    },
+    {
+      icon: GraduationCap,
+      tag: "People",
+      title: "Educated and capable",
+      body: "Not one-time training. Continuous education in what we measure, why it matters, how to read the signal.",
+    },
+    {
+      icon: Database,
+      tag: "Data",
+      title: "Joined and measured",
+      body: "Start centrally, governed at the asset level, aligned to the use cases that matter.",
+    },
+    {
+      icon: Shield,
+      tag: "Technology",
+      title: "Integrated and safe",
+      body: "Secure, governed, observable, and built to compose with what you already have.",
+    },
   ];
   return (
     <PageShell>
@@ -363,7 +372,12 @@ function ProcessFramePage() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {pillars.map((p, i) => (
-              <motion.div key={p.tag} {...fadeUp(0.06 * i)} whileHover={{ y: -4 }} className="group relative overflow-hidden rounded-3xl bg-card border border-card-border p-6 transition-shadow hover:shadow-md">
+              <motion.div
+                key={p.tag}
+                {...fadeUp(0.06 * i)}
+                whileHover={{ y: -4 }}
+                className="group relative overflow-hidden rounded-3xl bg-card border border-card-border p-6 transition-shadow hover:shadow-md"
+              >
                 <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" />
                 <div className="relative">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
@@ -376,6 +390,10 @@ function ProcessFramePage() {
               </motion.div>
             ))}
           </div>
+          <motion.p {...fadeUp(0.36)} className="mt-8 text-sm uppercase tracking-[0.22em] text-muted-foreground text-center">
+            <Sparkles className="inline h-4 w-4 mr-2 text-accent" />
+            If any of these are missing, AI runs on broken inputs.
+          </motion.p>
         </div>
       </div>
     </PageShell>
@@ -396,100 +414,24 @@ function MeasurePage() {
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>Most failed AI projects fail before the model runs. Someone bought AI to fix a process they did not understand. Measured against a baseline they invented retrospectively.</p>
                 <p className="text-foreground font-display text-2xl border-l-4 border-accent pl-5 py-1">
-                  Map the process. Measure it. Then evaluate.
+                  Map the process. Measure it end-to-end. Then evaluate.
                 </p>
               </div>
             </motion.div>
             <motion.div {...fadeUp(0.18)} className="relative">
               <div className="relative rounded-3xl bg-card border border-card-border p-10 overflow-hidden">
                 <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-primary/8 blur-2xl" />
-                <p className="text-[8rem] md:text-[11rem] font-display font-bold text-primary leading-[0.85] tracking-tighter mb-4">
+                <p className="text-[8rem] md:text-[11rem] font-display font-bold text-primary leading-[0.85] tracking-tighter mb-4 relative">
                   70%
                 </p>
-                <p className="text-base md:text-lg font-medium leading-snug mb-6">
+                <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
                   of AI project failures trace to data and process problems, not algorithms.
                 </p>
-                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground border-t border-border pt-4">
-                  Gartner / Deloitte / McKinsey
+                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground border-t border-border pt-4 relative">
+                  Gartner · Deloitte · McKinsey
                 </p>
               </div>
             </motion.div>
-          </div>
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
-function SiloPage() {
-  const sources = [
-    { icon: Phone,    label: "Contact Centre", sub: "Calls, transcripts, sentiment" },
-    { icon: Building2,label: "CRM",            sub: "Customer demographics and history" },
-    { icon: FileBadge,label: "Claims",         sub: "Outcomes and resolution data" },
-  ];
-  return (
-    <PageShell>
-      <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp(0)} className="mb-10 max-w-3xl">
-            <ChapterTag label="03 / Joining the silos" />
-            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 tracking-tight leading-[1.05]">
-              AI on a silo gives you a faster silo.
-            </h3>
-          </motion.div>
-          <div className="grid lg:grid-cols-3 gap-5 mb-8">
-            {sources.map((s, i) => (
-              <motion.div key={s.label} {...fadeUp(0.08 * i)} className="rounded-3xl bg-card border border-card-border p-6 flex items-center gap-4">
-                <span className="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                  <s.icon className="h-5 w-5" />
-                </span>
-                <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-1">Source</p>
-                  <p className="font-display text-lg font-semibold leading-tight">{s.label}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{s.sub}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div {...fadeUp(0.3)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-10 grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <Network className="h-7 w-7 text-accent mb-3" />
-              <p className="text-2xl md:text-3xl font-display font-semibold mb-2 leading-snug">"Why are these customers calling?"</p>
-              <p className="text-primary-foreground/80 text-base leading-relaxed">
-                Needs contact centre + CRM + claims, joined and consented. The vendor demos on one. The answer requires all three. You almost certainly do not have them joined.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-primary-foreground/10 p-6 backdrop-blur">
-              <p className="text-5xl md:text-6xl font-display font-bold text-accent tracking-tighter mb-2">60%</p>
-              <p className="text-sm leading-snug">of AI projects without AI-ready data are abandoned.</p>
-              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mt-3">Gartner, through 2026</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
-function PeoplePage() {
-  return (
-    <PageShell>
-      <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp(0)} className="mb-12 max-w-3xl">
-            <ChapterTag label="03 / People" />
-            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-6 tracking-tight leading-[1.05]">
-              People are not a project plan tick-box.
-            </h3>
-            <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-              <p>The biggest barrier to AI integration is not technology. It is workforce capability.</p>
-              <p>Education is not onboarding. It is ongoing. Teams need to understand what we measure, why it matters, and how to interpret what the data is telling us. Skills shift. So does the curriculum.</p>
-            </div>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <StatCard value="59%" label="report an AI skills gap, despite 82% providing some training." source="DataCamp 2026" delay={0.1} />
-            <StatCard value="26%" label="of workers report being trained on how to collaborate with AI." source="Accenture" delay={0.18} />
-            <StatCard value="56%" label="of the global workforce received no recent training." source="Manpower 2026" delay={0.26} />
           </div>
         </div>
       </div>
@@ -498,14 +440,14 @@ function PeoplePage() {
 }
 
 function Section04Divider() {
-  return <ChapterDivider number="04" title="Three lenses." subtitle="Assuming readiness is in place, here is how to pressure-test any specific AI proposal." />;
+  return <ChapterDivider number="04" title="Three lenses." subtitle="Assuming readiness is in place, and assuming this problem actually needs AI: here is how to pressure-test the proposal." />;
 }
 
 function ThreeLensesOverviewPage() {
   const lenses = [
-    { num: "01", icon: TrendingUp, tag: "Stand alone", title: "Unit Economics",         body: "Can this proposal justify itself on its own merits, in dollars or minutes per task?" },
-    { num: "02", icon: Layers,     tag: "Compound",    title: "Knowledge Foundation",   body: "Does it build a reusable foundation that other use cases can leverage, or a silo that dies?" },
-    { num: "03", icon: Network,    tag: "Connect",     title: "Roadmap Fit",            body: "Does it connect to the bigger picture, or is it another disconnected pilot?" },
+    { num: "01", icon: Network,    tag: "Connect",     title: "Roadmap Fit",         body: "Does it connect to the bigger picture, or is it another disconnected pilot?" },
+    { num: "02", icon: Layers,     tag: "Compound",    title: "Knowledge Foundation", body: "Does it build a reusable foundation that other use cases can leverage, or a silo that dies?" },
+    { num: "03", icon: TrendingUp, tag: "Stand alone", title: "Unit Economics",      body: "Can this proposal justify itself on its own merits, in dollars or minutes per task?" },
   ];
   return (
     <PageShell>
@@ -519,7 +461,12 @@ function ThreeLensesOverviewPage() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-5">
             {lenses.map((l, i) => (
-              <motion.div key={l.num} {...fadeUp(0.08 * i)} whileHover={{ y: -4 }} className="group relative rounded-3xl bg-card border border-card-border p-7 overflow-hidden transition-shadow hover:shadow-md">
+              <motion.div
+                key={l.num}
+                {...fadeUp(0.08 * i)}
+                whileHover={{ y: -4 }}
+                className="group relative rounded-3xl bg-card border border-card-border p-7 overflow-hidden transition-shadow hover:shadow-md"
+              >
                 <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" />
                 <div className="relative">
                   <p className="text-7xl font-display font-bold text-primary/15 tracking-tighter leading-none mb-4">{l.num}</p>
@@ -535,7 +482,7 @@ function ThreeLensesOverviewPage() {
           </div>
           <motion.div {...fadeUp(0.34)} className="mt-10 text-center">
             <p className="inline-block py-3 px-6 rounded-full bg-secondary text-secondary-foreground text-sm font-medium border border-secondary-border">
-              Pass all three: probably real. Fail any one: probably not ready.
+              All three have to be true to progress. Fail any one and the proposal isn't ready.
             </p>
           </motion.div>
         </div>
@@ -550,37 +497,55 @@ function Lens01Page() {
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp(0)} className="mb-10">
-            <ChapterTag label="04 / Lens 01" />
+            <ChapterTag label="04 / Lens 01 · Connect" />
             <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 tracking-tight leading-[1.05]">
-              Lens 01. <span className="text-primary">Unit economics.</span>
+              Lens 01. <span className="text-primary">Roadmap fit.</span>
             </h3>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-5 mb-8">
-            <motion.div {...fadeUp(0.1)} className="rounded-3xl bg-card border border-card-border p-8">
-              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-4">The question</p>
-              <p className="text-xl md:text-2xl font-display font-medium leading-snug">
-                Can you name what this changes per task, per transaction, per decision, in dollars or minutes? <span className="text-accent">A number, not an adjective.</span>
-              </p>
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            <motion.div {...fadeUp(0.1)} className="flex flex-col">
+              <div className="rounded-3xl bg-card border border-card-border p-8 mb-6 flex-1">
+                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-4">The question</p>
+                <p className="text-xl md:text-2xl font-display font-medium leading-snug">
+                  How does this connect to the bigger picture? Where else in your business could this intelligence be used?
+                </p>
+              </div>
+              <div className="rounded-3xl bg-secondary border border-secondary-border p-6">
+                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-accent mb-2">Why it matters</p>
+                <p className="text-sm md:text-base leading-relaxed text-foreground/80">
+                  Each AI initiative either contributes to a system that gets smarter, or it adds another disconnected pilot. <span className="text-foreground font-medium">There is no third option.</span>
+                </p>
+              </div>
             </motion.div>
-            <motion.div {...fadeUp(0.18)} className="rounded-3xl bg-destructive/8 border border-destructive/20 p-8">
-              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-destructive mb-4 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" /> The trap
+            <motion.div {...fadeUp(0.18)} className="relative rounded-3xl bg-primary text-primary-foreground p-10 overflow-hidden">
+              <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-accent/20 blur-2xl" />
+              <p className="text-[8rem] md:text-[11rem] font-display font-bold text-accent leading-[0.85] tracking-tighter mb-4 relative">
+                74%
               </p>
-              <p className="text-xl font-display font-medium mb-4">"Deflects 30% of tickets."</p>
-              <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
-                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Deflects to where?</li>
-                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Remaining tickets are harder.</li>
-                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Agents get slower.</li>
-                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Easy questions that built morale are gone.</li>
-                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />CSAT drops. The unit might be net negative.</li>
-              </ul>
+              <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
+                of AI's economic value is captured by 20% of organisations.
+              </p>
+              <p className="text-sm text-primary-foreground/80 mb-6 relative">
+                They tie outcomes to revenue, build governance before scaling, and treat AI as organisational redesign.
+              </p>
+              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 border-t border-primary-foreground/20 pt-4 relative">
+                PwC AI Performance Study, 2026
+              </p>
             </motion.div>
           </div>
-          <motion.div {...fadeUp(0.28)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-10">
-            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mb-3">Why it cuts through hype</p>
-            <p className="text-xl md:text-2xl font-display font-medium leading-snug">
-              Most pitches describe capability without committing to a unit. Forcing a unit kills <span className="text-accent">60% of bad proposals</span> before they leave the room.
-            </p>
+          <motion.div {...fadeUp(0.36)} className="mt-8 grid md:grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-card-border bg-card p-5 flex items-start gap-3">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent shrink-0 mt-0.5">
+                <CheckCircle2 className="h-4 w-4" />
+              </span>
+              <p className="text-sm md:text-base"><span className="font-semibold">Connected:</span> each pilot makes the next one stronger.</p>
+            </div>
+            <div className="rounded-2xl border border-card-border bg-card p-5 flex items-start gap-3">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-destructive/15 text-destructive shrink-0 mt-0.5">
+                <XCircle className="h-4 w-4" />
+              </span>
+              <p className="text-sm md:text-base"><span className="font-semibold">Disconnected:</span> each pilot stands alone, then dies.</p>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -599,7 +564,7 @@ function Lens02Page() {
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp(0)} className="mb-10">
-            <ChapterTag label="04 / Lens 02" />
+            <ChapterTag label="04 / Lens 02 · Compound" />
             <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 tracking-tight leading-[1.05]">
               Lens 02. <span className="text-primary">Knowledge foundation.</span>
             </h3>
@@ -621,9 +586,12 @@ function Lens02Page() {
               </motion.div>
             ))}
           </div>
-          <motion.p {...fadeUp(0.4)} className="text-lg md:text-xl text-foreground/80 leading-relaxed max-w-3xl">
-            Combined, they unlock use cases none of them deliver alone. Voice plus documents plus operations is product, QA, compliance, sentiment, regulatory insight. The pieces compound.
-          </motion.p>
+          <motion.div {...fadeUp(0.4)} className="rounded-3xl bg-primary text-primary-foreground p-7 md:p-8">
+            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mb-3">Concrete example</p>
+            <p className="text-lg md:text-xl font-display font-medium leading-snug">
+              A <span className="text-accent">churn signal</span> lives across all three. None of them sees it alone. Combined, they unlock use cases none of them deliver alone.
+            </p>
+          </motion.div>
         </div>
       </div>
     </PageShell>
@@ -636,39 +604,53 @@ function Lens03Page() {
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp(0)} className="mb-10">
-            <ChapterTag label="04 / Lens 03" />
+            <ChapterTag label="04 / Lens 03 · Stand alone" />
             <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 tracking-tight leading-[1.05]">
-              Lens 03. <span className="text-primary">Roadmap fit.</span>
+              Lens 03. <span className="text-primary">Unit economics.</span>
             </h3>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <motion.div {...fadeUp(0.1)}>
-              <div className="rounded-3xl bg-card border border-card-border p-8 mb-6">
-                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-4">The question</p>
-                <p className="text-xl md:text-2xl font-display font-medium leading-snug">
-                  How does this connect to the bigger picture? Where else in your business could this intelligence be used?
-                </p>
+          <div className="grid md:grid-cols-2 gap-5 mb-8">
+            <motion.div {...fadeUp(0.1)} className="rounded-3xl bg-card border border-card-border p-8">
+              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-4">The question</p>
+              <p className="text-xl md:text-2xl font-display font-medium leading-snug">
+                Can you name what this changes per task, per transaction, per decision, in dollars or minutes? <span className="text-accent">A number, not an adjective.</span>
+              </p>
+
+              {/* $ per task today/after viz */}
+              <div className="mt-7 grid grid-cols-2 gap-4">
+                <div className="rounded-2xl bg-secondary border border-secondary-border p-5 text-center">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-2">Today</p>
+                  <p className="text-4xl md:text-5xl font-display font-bold text-foreground tracking-tighter">$15</p>
+                  <p className="text-xs text-muted-foreground mt-2">per task</p>
+                </div>
+                <div className="rounded-2xl bg-primary/10 border border-primary/30 p-5 text-center">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-2">After</p>
+                  <p className="text-4xl md:text-5xl font-display font-bold text-primary tracking-tighter">$?</p>
+                  <p className="text-xs text-muted-foreground mt-2">if they can't name it, it isn't real</p>
+                </div>
               </div>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                Each AI initiative either contributes to a system that gets smarter, or it adds another disconnected pilot. <span className="text-foreground font-medium">There is no third option.</span>
-              </p>
             </motion.div>
-            <motion.div {...fadeUp(0.18)} className="relative rounded-3xl bg-primary text-primary-foreground p-10 overflow-hidden">
-              <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-accent/20 blur-2xl" />
-              <p className="text-[8rem] md:text-[11rem] font-display font-bold text-accent leading-[0.85] tracking-tighter mb-4 relative">
-                74%
+
+            <motion.div {...fadeUp(0.18)} className="rounded-3xl bg-destructive/8 border border-destructive/20 p-8">
+              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-destructive mb-4 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" /> The trap
               </p>
-              <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
-                of AI's economic value is captured by 20% of organisations.
-              </p>
-              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 border-t border-primary-foreground/20 pt-4 relative">
-                PwC AI Performance Study, 2026
-              </p>
-              <p className="text-sm text-primary-foreground/80 mt-4 relative">
-                They tie outcomes to revenue, build governance before scaling, and treat AI as organisational redesign.
-              </p>
+              <p className="text-xl font-display font-medium mb-4">"Deflects 30% of tickets."</p>
+              <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Deflects to where?</li>
+                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Remaining tickets are harder.</li>
+                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Agents get slower.</li>
+                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />Easy questions that built morale are gone.</li>
+                <li className="flex gap-2"><span className="mt-2 h-1 w-1 rounded-full bg-destructive shrink-0" />CSAT drops. The unit might be net negative.</li>
+              </ul>
             </motion.div>
           </div>
+          <motion.div {...fadeUp(0.32)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-10">
+            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mb-3">Why it cuts through hype</p>
+            <p className="text-xl md:text-2xl font-display font-medium leading-snug">
+              Most pitches describe capability without committing to a unit. Forcing a unit <span className="text-accent">kills most bad proposals</span> before they leave the room.
+            </p>
+          </motion.div>
         </div>
       </div>
     </PageShell>
@@ -676,16 +658,16 @@ function Lens03Page() {
 }
 
 function Section05Divider() {
-  return <ChapterDivider number="05" title="Five questions to ask on Monday." subtitle="Real questions, not rhetorical ones. Photograph this slide." />;
+  return <ChapterDivider number="05" title="Five questions to ask on Monday." subtitle="Real questions, not rhetorical ones." />;
 }
 
 function FiveQuestionsPage() {
   const questions = [
     { title: "Process",         q: "Do we understand our end-to-end process?" },
     { title: "Problem fit",     q: "What specific problem are we solving, who notices when it is solved, and could we solve it without AI?" },
-    { title: "Unit economics",  q: "What is the cost or value per transaction today, in dollars, and what does it become after?" },
-    { title: "Reuse",           q: "Does this build reusable capability that other use cases can leverage, or is it a silo?" },
     { title: "Bigger picture",  q: "How does this connect to the bigger picture and the other things we are building?" },
+    { title: "Foundation",      q: "Does this build reusable capability that other use cases can leverage, or is it a silo?" },
+    { title: "Unit economics",  q: "What is the cost or value per transaction today, in dollars, and what does it become after?" },
   ];
   return (
     <PageShell dark>
@@ -698,12 +680,17 @@ function FiveQuestionsPage() {
             </h3>
             <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl leading-relaxed flex items-center gap-3">
               <Camera className="h-5 w-5 text-accent shrink-0" />
-              Each question has put real proposals on real desks back into proportion.
+              Start with question 1. Map one end-to-end process before you ask the others. Photograph this slide.
             </p>
           </motion.div>
           <div className="grid gap-4">
             {questions.map((q, i) => (
-              <motion.div key={q.title} {...fadeUp(0.06 * i)} whileHover={{ x: 6 }} className="bg-background text-foreground p-5 md:p-6 rounded-2xl flex items-center gap-5 shadow-xl transition-transform">
+              <motion.div
+                key={q.title}
+                {...fadeUp(0.06 * i)}
+                whileHover={{ x: 6 }}
+                className="bg-background text-foreground p-5 md:p-6 rounded-2xl flex items-center gap-5 shadow-xl transition-transform"
+              >
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground font-display font-bold text-lg shrink-0">
                   {i + 1}
                 </div>
@@ -729,20 +716,17 @@ function ThreeObservationsPage() {
     {
       num: "01",
       title: "Transformative change is real. Readiness decides who benefits.",
-      body: "Organisations with process clarity, data foundations, and educated teams are seeing meaningful returns. Those without are stalling.",
-      stat: "79% of organisations report AI adoption challenges. 54% of C-suite say it is tearing the company apart.",
+      body: "Organisations with process clarity, data foundations, and educated teams are seeing meaningful returns. Those without are stalling. 79% of organisations report AI adoption challenges. 54% of C-suite say it is tearing the company apart.",
     },
     {
       num: "02",
-      title: "Workforce disruption is happening. Quieter offices are not.",
-      body: "Employees using AI are individually more productive, taking on broader scope, working faster, extending hours. AI does not reduce work. It intensifies it. The leadership question is whether that intensity creates value or burns the team out.",
-      stat: null,
+      title: "Capability isn't the constraint. Deployment is.",
+      body: "Models that do the work already exist. The gap is access, governance, integration, and a process worth measuring. These are leadership choices. The capability is the easy part.",
     },
     {
       num: "03",
-      title: "The skills gap, not the technology, is the constraint.",
-      body: "60% of AI projects without AI-ready data are abandoned. The biggest barrier to integration is workforce capability. Continuous education separates the 20% capturing 74% of the value from everyone else.",
-      stat: "The winners in 2026 are treating AI as organisational redesign, not an IT project.",
+      title: "Continuous education is the differentiator.",
+      body: "The biggest barrier to AI integration is workforce capability. Not a one-off programme. Continuous, job-specific education is what separates the 20% capturing 74% of the value from everyone else.",
     },
   ];
   return (
@@ -755,18 +739,27 @@ function ThreeObservationsPage() {
               Three things I think are true.
             </h3>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
             {items.map((it, i) => (
-              <motion.div key={it.num} {...fadeUp(0.08 * i)} className="rounded-3xl border border-border bg-card p-7 h-full">
+              <motion.div
+                key={it.num}
+                {...fadeUp(0.08 * i)}
+                className="rounded-3xl border border-border bg-card p-7 h-full"
+              >
                 <p className="text-6xl font-display font-bold text-primary/15 tracking-tighter leading-none mb-4">{it.num}</p>
                 <h4 className="text-xl font-display font-semibold mb-3 leading-snug">{it.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{it.body}</p>
-                {it.stat && (
-                  <p className="text-sm font-medium bg-secondary text-secondary-foreground p-4 rounded-xl border border-secondary-border leading-snug">{it.stat}</p>
-                )}
+                <p className="text-sm text-muted-foreground leading-relaxed">{it.body}</p>
               </motion.div>
             ))}
           </div>
+          <motion.div {...fadeUp(0.32)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute -top-16 -left-16 h-44 w-44 rounded-full bg-accent/15 blur-2xl" />
+            <div className="absolute -bottom-16 -right-16 h-44 w-44 rounded-full bg-primary-foreground/10 blur-2xl" />
+            <p className="relative text-[10px] font-mono uppercase tracking-[0.3em] text-primary-foreground/60 mb-4">The kicker</p>
+            <p className="relative text-2xl md:text-4xl font-display font-semibold leading-tight max-w-4xl mx-auto">
+              The first organisation in your industry to fix the foundations <span className="text-accent">wins</span>. The second <span className="text-primary-foreground/80">struggles</span>. The third <span className="text-primary-foreground/60">gets acquired</span>.
+            </p>
+          </motion.div>
         </div>
       </div>
     </PageShell>
@@ -774,7 +767,6 @@ function ThreeObservationsPage() {
 }
 
 function ContactPage() {
-  const brand = useBrand();
   return (
     <PageShell>
       <div className="flex-1 flex items-center justify-center px-4 pt-28 pb-12">
@@ -787,20 +779,20 @@ function ContactPage() {
               Questions.
             </h2>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10">
-              {brand.presenter.name} <span className="mx-2 text-border">|</span> {brand.presenter.role}
+              Tim Barnes <span className="mx-2 text-border">|</span> AI and Automation Expert
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <Button size="lg" className="rounded-full px-8 h-12 w-full sm:w-auto" data-testid="button-contact-cta">
-                <Mail className="mr-2 h-4 w-4" /> {brand.contactCtaLabel}
+                <Mail className="mr-2 h-4 w-4" /> Contact Tim Barnes
               </Button>
               <Button size="lg" variant="outline" className="rounded-full px-8 h-12 w-full sm:w-auto" asChild>
-                <a href={brand.contactHref} target="_blank" rel="noopener noreferrer" data-testid="link-brand">
-                  {brand.contactDisplayUrl} <ArrowRight className="ml-2 h-4 w-4" />
+                <a href="https://wedoai.com.au" target="_blank" rel="noopener noreferrer" data-testid="link-wedoai">
+                  wedoai.com.au <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
             </div>
             <p className="text-xs text-muted-foreground border-t border-border pt-8 uppercase tracking-[0.22em]">
-              {brand.footer}
+              © 2026 WeDo AI
             </p>
           </motion.div>
         </div>
@@ -811,27 +803,24 @@ function ContactPage() {
 
 const PAGE_COMPONENTS = [
   HeroPage,                  // 0
-  Section01Divider,          // 1
-  SignalPage,                // 2
-  Section02Divider,          // 3
-  CapabilityGapPage,         // 4
-  PilotsStallPage,           // 5
-  DeployablePage,            // 6
-  Section03Divider,          // 7
-  ProcessFramePage,          // 8
-  MeasurePage,               // 9
-  SiloPage,                  // 10
-  PeoplePage,                // 11
-  Section04Divider,          // 12
-  ThreeLensesOverviewPage,   // 13
-  Lens01Page,                // 14
-  Lens02Page,                // 15
-  Lens03Page,                // 16
-  Section05Divider,          // 17
-  FiveQuestionsPage,         // 18
-  Section06Divider,          // 19
-  ThreeObservationsPage,     // 20
-  ContactPage,               // 21
+  HowIBuiltThisPage,         // 1
+  Section01Divider,          // 2
+  SignalPage,                // 3
+  Section02Divider,          // 4
+  CapabilityGapPage,         // 5
+  Section03Divider,          // 6
+  ProcessFramePage,          // 7
+  MeasurePage,               // 8
+  Section04Divider,          // 9
+  ThreeLensesOverviewPage,   // 10
+  Lens01Page,                // 11
+  Lens02Page,                // 12
+  Lens03Page,                // 13
+  Section05Divider,          // 14
+  FiveQuestionsPage,         // 15
+  Section06Divider,          // 16
+  ThreeObservationsPage,     // 17
+  ContactPage,               // 18
 ];
 
 /* ─── Root ─────────────────────────────────────────────────────────── */

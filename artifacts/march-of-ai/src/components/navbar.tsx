@@ -1,4 +1,3 @@
-import { ThemeToggle } from "./theme-toggle";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 
@@ -56,9 +55,7 @@ export function Navbar({ currentPage, navSections, onNavigate }: NavbarProps) {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-        </div>
+        <div className="flex items-center gap-4" />
       </div>
     </header>
   );
