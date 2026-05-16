@@ -190,6 +190,16 @@ function HeroPage() {
               </a>
             </Button>
           </motion.div>
+          <motion.div {...fadeUp(0.3)} className="mb-20 -mt-16">
+            <a
+              href="https://youtu.be/86y96IIqfN8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+            >
+              <ArrowUpRight className="h-4 w-4" /> Watch presentation video
+            </a>
+          </motion.div>
           <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-card-border flex items-baseline gap-6 flex-wrap">
             <div>
               <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-2">Presented by</p>
