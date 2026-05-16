@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -13,6 +13,7 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
   --color-card-border: hsl(var(--card-border));
+  --color-card-elevated: hsl(var(--card-elevated));
 
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
@@ -49,43 +50,63 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* WeDoAI single-mode theme (dark) */
+/* WeDoAI — deck-matched palette
+   #0B2A45 deep navy background
+   #07344F lifted navy surface
+   #143A57 elevated card / chip
+   #2BCFCF bright teal accent
+   #A8B5C2 light blue-grey muted text
+   #F1F0EE warm cream primary text
+*/
 :root {
-  --background: 228 28% 14%;
-  --foreground: 0 0% 96%;
-  --border: 226 22% 25%;
+  /* Deep navy background, warm cream foreground */
+  --background: 210 71% 16%;          /* #0B2A45 */
+  --foreground: 40 11% 94%;            /* #F1F0EE */
 
-  --card: 226 22% 19%;
-  --card-foreground: 0 0% 96%;
-  --card-border: 226 22% 25%;
+  /* Borders — quiet mid-navy lines */
+  --border: 210 55% 22%;               /* ~#143A57 */
+  --input: 210 55% 22%;
+  --ring: 180 60% 49%;                 /* teal focus */
 
-  --popover: 228 28% 14%;
-  --popover-foreground: 0 0% 96%;
-  --popover-border: 226 22% 25%;
+  /* Cards: a single elevated navy surface */
+  --card: 207 80% 17%;                 /* #07344F lifted */
+  --card-foreground: 40 11% 94%;
+  --card-border: 210 55% 22%;
+  --card-elevated: 210 60% 21%;        /* #143A57 — for inner panels */
 
-  --primary: 218 54% 52%;
-  --primary-foreground: 0 0% 100%;
+  --popover: 207 80% 17%;
+  --popover-foreground: 40 11% 94%;
+  --popover-border: 210 55% 22%;
 
-  --secondary: 226 22% 19%;
-  --secondary-foreground: 218 54% 52%;
-  --secondary-border: 226 22% 25%;
+  /* Primary = teal */
+  --primary: 180 60% 49%;              /* #2BCFCF */
+  --primary-foreground: 210 71% 12%;   /* dark navy text on teal buttons */
+  --primary-border: 180 60% 49%;
 
-  --muted: 226 22% 19%;
-  --muted-foreground: 220 9% 65%;
+  /* Secondary = mid-navy chip */
+  --secondary: 210 60% 21%;            /* #143A57 */
+  --secondary-foreground: 213 19% 71%; /* light blue-grey */
+  --secondary-border: 210 55% 25%;
 
-  --accent: 24 85% 56%;
-  --accent-foreground: 0 0% 100%;
+  /* Muted = same as secondary, quieter foreground */
+  --muted: 210 60% 21%;
+  --muted-foreground: 213 19% 71%;     /* #A8B5C2 */
+  --muted-border: 210 55% 22%;
 
-  --destructive: 0 62% 50%;
-  --destructive-foreground: 0 0% 100%;
+  /* Accent = teal mirror (monochromatic accent system) */
+  --accent: 180 60% 49%;
+  --accent-foreground: 210 71% 12%;
+  --accent-border: 180 60% 49%;
 
-  --input: 226 22% 25%;
-  --ring: 218 54% 52%;
+  /* Destructive — keep a warm warning red */
+  --destructive: 358 65% 60%;
+  --destructive-foreground: 40 11% 94%;
+  --destructive-border: 358 65% 60%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-  --radius: 0.5rem;
+  --app-font-mono: 'Inter', monospace;
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -94,8 +115,14 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
+  }
+  /* Selection styling */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
   }
 }

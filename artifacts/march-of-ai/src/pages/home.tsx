@@ -41,29 +41,28 @@ const fadeUp = (delay = 0) => ({
 
 /* ─── Layout primitives ───────────────────────────────────────────────── */
 
-function PageShell({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+function PageShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`relative min-h-screen flex flex-col overflow-y-auto overflow-x-hidden ${dark ? "bg-primary text-primary-foreground" : "bg-background text-foreground"}`}>
-      <BackdropOrbs dark={dark} />
+    <div className="relative min-h-screen flex flex-col overflow-y-auto overflow-x-hidden bg-background text-foreground">
+      <BackdropAtmosphere />
       <div className="relative flex-1 flex flex-col">{children}</div>
     </div>
   );
 }
 
-function BackdropOrbs({ dark = false }: { dark?: boolean }) {
+function BackdropAtmosphere() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className={`absolute -top-32 -right-32 h-[28rem] w-[28rem] rounded-full blur-3xl ${dark ? "bg-primary-foreground/10" : "bg-primary/10"}`} />
-      <div className={`absolute -bottom-40 -left-32 h-[24rem] w-[24rem] rounded-full blur-3xl ${dark ? "bg-accent/15" : "bg-accent/8"}`} />
-      <div className="absolute inset-0 opacity-[0.04] [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:22px_22px]" />
+      <div className="absolute -top-40 -right-40 h-[36rem] w-[36rem] rounded-full bg-primary/[0.04] blur-3xl" />
+      <div className="absolute -bottom-48 -left-40 h-[28rem] w-[28rem] rounded-full bg-primary/[0.025] blur-3xl" />
     </div>
   );
 }
 
 function ChapterTag({ label, accent = false }: { label: string; accent?: boolean }) {
   return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase ${accent ? "bg-accent/10 text-accent border border-accent/30" : "bg-secondary text-secondary-foreground border border-secondary-border"}`}>
-      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+    <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-[0.22em] uppercase ${accent ? "bg-primary/10 text-primary border border-primary/30" : "bg-secondary text-secondary-foreground border border-secondary-border"}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
       {label}
     </div>
   );
@@ -73,15 +72,14 @@ function StatCard({ value, label, source, delay = 0 }: { value: string; label: s
   return (
     <motion.div
       {...fadeUp(delay)}
-      whileHover={{ y: -3 }}
-      className="group relative overflow-hidden p-7 md:p-8 rounded-3xl bg-card border border-card-border shadow-sm hover:shadow-md transition-shadow flex flex-col h-full"
+      whileHover={{ y: -4 }}
+      className="group relative overflow-hidden p-7 md:p-8 rounded-2xl bg-card border border-card-border transition-all hover:border-primary/40 flex flex-col h-full"
     >
-      <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-      <div className="relative text-5xl md:text-6xl lg:text-7xl font-display font-bold text-primary mb-4 tracking-tighter leading-none">
+      <div className="relative text-6xl md:text-7xl lg:text-8xl font-display font-bold text-primary mb-5 tracking-tighter leading-[0.85]">
         {value}
       </div>
-      <p className="relative text-foreground font-medium text-base md:text-lg mb-6 flex-grow leading-snug">{label}</p>
-      <div className="relative text-[10px] text-muted-foreground uppercase tracking-[0.18em] mt-auto border-t border-border pt-4">
+      <p className="relative text-foreground font-normal text-base md:text-lg mb-8 flex-grow leading-snug">{label}</p>
+      <div className="relative text-[10px] text-muted-foreground uppercase tracking-[0.22em] mt-auto border-t border-card-border pt-4">
         {source}
       </div>
     </motion.div>
@@ -91,7 +89,7 @@ function StatCard({ value, label, source, delay = 0 }: { value: string; label: s
 function PullQuote({ children }: { children: React.ReactNode }) {
   return (
     <motion.figure {...fadeUp(0.2)} className="relative max-w-3xl">
-      <Quote className="absolute -top-4 -left-2 h-10 w-10 text-accent/30" aria-hidden />
+      <Quote className="absolute -top-4 -left-2 h-10 w-10 text-primary/30" aria-hidden />
       <blockquote className="relative pl-10 text-2xl md:text-3xl font-display font-medium leading-snug">
         {children}
       </blockquote>
@@ -101,26 +99,26 @@ function PullQuote({ children }: { children: React.ReactNode }) {
 
 function ChapterDivider({ number, title, subtitle }: { number: string; title: string; subtitle: string }) {
   return (
-    <PageShell dark>
+    <PageShell>
       <div className="flex-1 flex items-center px-4 pt-28 pb-24">
         <div className="container mx-auto max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="absolute -top-20 -left-4 md:-left-8 text-[18rem] md:text-[28rem] lg:text-[34rem] font-display font-bold leading-none tracking-tighter text-primary-foreground/5 select-none pointer-events-none">
+            <div className="absolute -top-24 -left-4 md:-left-8 text-[22rem] md:text-[32rem] lg:text-[40rem] font-display font-bold leading-none tracking-tighter text-primary/[0.06] select-none pointer-events-none">
               {number}
             </div>
             <div className="relative">
-              <p className="font-mono text-xs tracking-[0.3em] uppercase text-primary-foreground/60 mb-6">
-                Chapter {number}
+              <p className="font-mono text-[11px] tracking-[0.32em] uppercase text-primary mb-6">
+                Chapter — {number}
               </p>
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[1.02] mb-8 max-w-5xl">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[1.0] mb-8 max-w-5xl">
                 {title}
               </h2>
-              <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-3xl leading-relaxed">
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed">
                 {subtitle}
               </p>
             </div>
@@ -143,13 +141,16 @@ function HeroPage() {
           </motion.div>
           <motion.h1
             {...fadeUp(0.08)}
-            className="text-6xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter leading-[1.0] mt-8 mb-6"
+            className="text-6xl md:text-8xl lg:text-[9.5rem] font-display font-bold tracking-tighter leading-[0.95] mt-8 mb-8"
           >
-            The March<br />of <span className="text-primary">AI</span>.
+            The March<br />of <span className="relative inline-block text-primary">
+              AI
+              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-primary/40" aria-hidden />
+            </span>.
           </motion.h1>
           <motion.p
             {...fadeUp(0.16)}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed"
+            className="text-xl md:text-2xl text-foreground/75 max-w-3xl mb-12 leading-relaxed"
           >
             A calibration tool, not a tour. Three lenses, five questions, and one readiness gap most organisations have not closed.
           </motion.p>
@@ -161,11 +162,14 @@ function HeroPage() {
               <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
             </Button>
           </motion.div>
-          <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-border">
-            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-2">Presented by</p>
-            <p className="text-2xl font-display font-semibold">
-              Tim Barnes <span className="text-muted-foreground font-normal text-base ml-2">AI and Automation Expert · WeDoAI</span>
-            </p>
+          <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-card-border flex items-baseline gap-6 flex-wrap">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-2">Presented by</p>
+              <p className="text-2xl font-display font-semibold">
+                Tim Barnes
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">AI and Automation Expert · WeDoAI</p>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -214,9 +218,10 @@ function HowIBuiltThisPage() {
               </motion.div>
             ))}
           </div>
-          <motion.div {...fadeUp(0.5)} className="rounded-3xl bg-secondary border border-secondary-border p-7 md:p-8">
+          <motion.div {...fadeUp(0.5)} className="rounded-2xl bg-card-elevated border border-primary/25 p-7 md:p-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
             <p className="text-lg md:text-xl font-display leading-snug">
-              <span className="text-accent font-semibold">Easy</span> for one person with AI agents. <span className="text-foreground/60">/</span> <span className="text-primary font-semibold">Hard</span> at enterprise scale. That gap is what this talk is about.
+              <span className="text-primary font-semibold">Easy</span> for one person with AI agents. <span className="text-muted-foreground mx-1">/</span> <span className="text-foreground font-semibold">Hard</span> at enterprise scale. That gap is what this talk is about.
             </p>
           </motion.div>
         </div>
@@ -517,18 +522,18 @@ function Lens01Page() {
                 </p>
               </div>
             </motion.div>
-            <motion.div {...fadeUp(0.18)} className="relative rounded-3xl bg-primary text-primary-foreground p-10 overflow-hidden">
-              <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-accent/20 blur-2xl" />
-              <p className="text-[8rem] md:text-[11rem] font-display font-bold text-accent leading-[0.85] tracking-tighter mb-4 relative">
+            <motion.div {...fadeUp(0.18)} className="relative rounded-2xl bg-card-elevated border border-primary/25 p-10 overflow-hidden">
+              <div className="absolute -top-16 -right-16 h-52 w-52 rounded-full bg-primary/[0.08] blur-3xl" />
+              <p className="relative text-[9rem] md:text-[13rem] font-display font-bold text-primary leading-[0.82] tracking-tighter mb-4">
                 74%
               </p>
-              <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
+              <p className="relative text-base md:text-lg font-medium leading-snug mb-6 text-foreground">
                 of AI's economic value is captured by 20% of organisations.
               </p>
-              <p className="text-sm text-primary-foreground/80 mb-6 relative">
+              <p className="relative text-sm text-muted-foreground mb-6">
                 They tie outcomes to revenue, build governance before scaling, and treat AI as organisational redesign.
               </p>
-              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 border-t border-primary-foreground/20 pt-4 relative">
+              <p className="relative text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground border-t border-card-border pt-4">
                 PwC AI Performance Study, 2026
               </p>
             </motion.div>
@@ -586,10 +591,11 @@ function Lens02Page() {
               </motion.div>
             ))}
           </div>
-          <motion.div {...fadeUp(0.4)} className="rounded-3xl bg-primary text-primary-foreground p-7 md:p-8">
-            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mb-3">Concrete example</p>
+          <motion.div {...fadeUp(0.4)} className="rounded-2xl bg-card-elevated border border-primary/25 p-7 md:p-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
+            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-3">Concrete example</p>
             <p className="text-lg md:text-xl font-display font-medium leading-snug">
-              A <span className="text-accent">churn signal</span> lives across all three. None of them sees it alone. Combined, they unlock use cases none of them deliver alone.
+              A <span className="text-primary">churn signal</span> lives across all three. None of them sees it alone. Combined, they unlock use cases none of them deliver alone.
             </p>
           </motion.div>
         </div>
@@ -645,10 +651,11 @@ function Lens03Page() {
               </ul>
             </motion.div>
           </div>
-          <motion.div {...fadeUp(0.32)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-10">
-            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-foreground/60 mb-3">Why it cuts through hype</p>
+          <motion.div {...fadeUp(0.32)} className="rounded-2xl bg-card-elevated border border-primary/25 p-8 md:p-10 relative overflow-hidden">
+            <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
+            <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-3">Why it cuts through hype</p>
             <p className="text-xl md:text-2xl font-display font-medium leading-snug">
-              Most pitches describe capability without committing to a unit. Forcing a unit <span className="text-accent">kills most bad proposals</span> before they leave the room.
+              Most pitches describe capability without committing to a unit. Forcing a unit <span className="text-primary">kills most bad proposals</span> before they leave the room.
             </p>
           </motion.div>
         </div>
@@ -670,16 +677,16 @@ function FiveQuestionsPage() {
     { title: "Unit economics",  q: "What is the cost or value per transaction today, in dollars, and what does it become after?" },
   ];
   return (
-    <PageShell dark>
+    <PageShell>
       <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
         <div className="container mx-auto max-w-5xl">
-          <motion.div {...fadeUp(0)} className="mb-10">
+          <motion.div {...fadeUp(0)} className="mb-12">
             <ChapterTag label="05 / Application" accent />
             <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-4 tracking-tight leading-[1.05]">
               Five questions for Monday.
             </h3>
-            <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl leading-relaxed flex items-center gap-3">
-              <Camera className="h-5 w-5 text-accent shrink-0" />
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed flex items-center gap-3">
+              <Camera className="h-5 w-5 text-primary shrink-0" />
               Start with question 1. Map one end-to-end process before you ask the others. Photograph this slide.
             </p>
           </motion.div>
@@ -688,15 +695,15 @@ function FiveQuestionsPage() {
               <motion.div
                 key={q.title}
                 {...fadeUp(0.06 * i)}
-                whileHover={{ x: 6 }}
-                className="bg-background text-foreground p-5 md:p-6 rounded-2xl flex items-center gap-5 shadow-xl transition-transform"
+                whileHover={{ x: 6, borderColor: "hsl(var(--primary) / 0.4)" }}
+                className="bg-card border border-card-border p-5 md:p-6 rounded-2xl flex items-center gap-5 transition-all"
               >
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground font-display font-bold text-lg shrink-0">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground font-display font-bold text-xl shrink-0">
                   {i + 1}
                 </div>
                 <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-1">{q.title}</p>
-                  <p className="text-lg md:text-xl font-medium leading-snug">{q.q}</p>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-1">{q.title}</p>
+                  <p className="text-lg md:text-xl font-medium leading-snug text-foreground">{q.q}</p>
                 </div>
               </motion.div>
             ))}
@@ -752,12 +759,12 @@ function ThreeObservationsPage() {
               </motion.div>
             ))}
           </div>
-          <motion.div {...fadeUp(0.32)} className="rounded-3xl bg-primary text-primary-foreground p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute -top-16 -left-16 h-44 w-44 rounded-full bg-accent/15 blur-2xl" />
-            <div className="absolute -bottom-16 -right-16 h-44 w-44 rounded-full bg-primary-foreground/10 blur-2xl" />
-            <p className="relative text-[10px] font-mono uppercase tracking-[0.3em] text-primary-foreground/60 mb-4">The kicker</p>
-            <p className="relative text-2xl md:text-4xl font-display font-semibold leading-tight max-w-4xl mx-auto">
-              The first organisation in your industry to fix the foundations <span className="text-accent">wins</span>. The second <span className="text-primary-foreground/80">struggles</span>. The third <span className="text-primary-foreground/60">gets acquired</span>.
+          <motion.div {...fadeUp(0.32)} className="rounded-2xl bg-card-elevated border border-primary/30 p-10 md:p-14 text-center relative overflow-hidden">
+            <div className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-primary/[0.08] blur-3xl" />
+            <div className="absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-primary/[0.06] blur-3xl" />
+            <p className="relative text-[10px] font-mono uppercase tracking-[0.32em] text-primary mb-5">The kicker</p>
+            <p className="relative text-2xl md:text-4xl lg:text-5xl font-display font-semibold leading-[1.1] max-w-4xl mx-auto tracking-tight">
+              The first organisation in your industry to fix the foundations <span className="text-primary">wins</span>. The second <span className="text-foreground/70">struggles</span>. The third <span className="text-muted-foreground">gets acquired</span>.
             </p>
           </motion.div>
         </div>
