@@ -181,8 +181,13 @@ function HeroPage() {
                 <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
               </a>
             </Button>
-            <Button size="lg" variant="outline" className="text-base h-14 px-8 rounded-full border-border hover:bg-secondary" data-testid="button-contact">
-              <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
+            <Button size="lg" variant="outline" className="text-base h-14 px-8 rounded-full border-border hover:bg-secondary" asChild>
+              <a
+                href="mailto:tim@wedoai.com.au?subject=March%20of%20AI%20%E2%80%93%20follow-up"
+                data-testid="button-contact"
+              >
+                <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
+              </a>
             </Button>
           </motion.div>
           <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-card-border flex items-baseline gap-6 flex-wrap">
@@ -834,8 +839,13 @@ function ContactPage() {
               Tim Barnes <span className="mx-2 text-border">|</span> AI and Automation Expert
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <Button size="lg" className="rounded-full px-8 h-12 w-full sm:w-auto" data-testid="button-contact-cta">
-                <Mail className="mr-2 h-4 w-4" /> Contact Tim Barnes
+              <Button size="lg" className="rounded-full px-8 h-12 w-full sm:w-auto" asChild>
+                <a
+                  href="mailto:tim@wedoai.com.au?subject=March%20of%20AI%20%E2%80%93%20follow-up"
+                  data-testid="button-contact-cta"
+                >
+                  <Mail className="mr-2 h-4 w-4" /> Contact Tim Barnes
+                </a>
               </Button>
               <Button size="lg" variant="outline" className="rounded-full px-8 h-12 w-full sm:w-auto" asChild>
                 <a href="https://wedoai.com.au" target="_blank" rel="noopener noreferrer" data-testid="link-wedoai">
