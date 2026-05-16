@@ -172,8 +172,14 @@ function HeroPage() {
             A calibration tool, not a tour. Three lenses, five questions, and one readiness gap most organisations have not closed.
           </motion.p>
           <motion.div {...fadeUp(0.24)} className="flex flex-col sm:flex-row gap-4 mb-20">
-            <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" data-testid="button-download">
-              <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
+            <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
+              <a
+                href={`${import.meta.env.BASE_URL}march-of-ai.pptx`}
+                download="march-of-ai.pptx"
+                data-testid="button-download"
+              >
+                <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
+              </a>
             </Button>
             <Button size="lg" variant="outline" className="text-base h-14 px-8 rounded-full border-border hover:bg-secondary" data-testid="button-contact">
               <Mail className="mr-2 h-5 w-5" /> Contact Tim Barnes
