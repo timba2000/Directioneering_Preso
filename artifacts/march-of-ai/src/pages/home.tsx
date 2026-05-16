@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowRight, ArrowLeft, Download, Mail, AlertTriangle, Camera,
+  ArrowRight, ArrowLeft, ArrowUpRight, Download, Mail, AlertTriangle, Camera,
   Layers, Database, Shield, XCircle, CheckCircle2,
   TrendingUp, Workflow, GraduationCap, Network, Quote, Sparkles,
   MessageSquare, FileText, Briefcase,
@@ -68,7 +68,7 @@ function ChapterTag({ label, accent = false }: { label: string; accent?: boolean
   );
 }
 
-function StatCard({ value, label, source, delay = 0 }: { value: string; label: string; source: string; delay?: number }) {
+function StatCard({ value, label, source, sourceHref, delay = 0 }: { value: string; label: string; source: string; sourceHref?: string; delay?: number }) {
   return (
     <motion.div
       {...fadeUp(delay)}
@@ -79,10 +79,27 @@ function StatCard({ value, label, source, delay = 0 }: { value: string; label: s
         {value}
       </div>
       <p className="relative text-foreground font-normal text-base md:text-lg mb-8 flex-grow leading-snug">{label}</p>
-      <div className="relative text-[10px] text-muted-foreground uppercase tracking-[0.22em] mt-auto border-t border-card-border pt-4">
-        {source}
+      <div className="relative text-[10px] uppercase tracking-[0.22em] mt-auto border-t border-card-border pt-4">
+        <SourceLink href={sourceHref} label={source} />
       </div>
     </motion.div>
+  );
+}
+
+function SourceLink({ href, label, className = "" }: { href?: string; label: string; className?: string }) {
+  if (!href) {
+    return <span className={`text-muted-foreground ${className}`}>{label}</span>;
+  }
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors underline decoration-dotted decoration-muted-foreground/30 underline-offset-4 hover:decoration-primary/60 ${className}`}
+    >
+      {label}
+      <ArrowUpRight className="h-3 w-3 opacity-60" aria-hidden />
+    </a>
   );
 }
 
@@ -250,9 +267,27 @@ function SignalPage() {
             </p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <StatCard value="95%" label="of GenAI pilots fail to scale." source="MIT, 2025" delay={0.1} />
-            <StatCard value="42%" label="of companies abandoned most AI initiatives in 2025, up from 17% the year prior." source="S&P Global" delay={0.18} />
-            <StatCard value="5%"  label="of companies achieve rapid revenue acceleration." source="MIT" delay={0.26} />
+            <StatCard
+              value="95%"
+              label="of GenAI pilots fail to scale."
+              source="MIT, 2025"
+              sourceHref="https://nanda.media.mit.edu/"
+              delay={0.1}
+            />
+            <StatCard
+              value="42%"
+              label="of companies abandoned most AI initiatives in 2025, up from 17% the year prior."
+              source="S&P Global"
+              sourceHref="https://www.spglobal.com/market-intelligence/en/news-insights/research/ai-experiences-rapid-adoption-but-with-mixed-outcomes-highlights-from-vote-ai-machine-learning"
+              delay={0.18}
+            />
+            <StatCard
+              value="5%"
+              label="of companies achieve rapid revenue acceleration."
+              source="MIT"
+              sourceHref="https://nanda.media.mit.edu/"
+              delay={0.26}
+            />
           </div>
         </div>
       </div>
@@ -432,8 +467,12 @@ function MeasurePage() {
                 <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
                   of AI project failures trace to data and process problems, not algorithms.
                 </p>
-                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground border-t border-border pt-4 relative">
-                  Gartner · Deloitte · McKinsey
+                <p className="text-[10px] font-mono uppercase tracking-[0.22em] border-t border-border pt-4 relative flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <SourceLink href="https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk" label="Gartner" />
+                  <span className="text-muted-foreground/40">·</span>
+                  <SourceLink href="https://www.deloitte.com/us/en/services/consulting/research/state-of-generative-ai-in-enterprise.html" label="Deloitte" />
+                  <span className="text-muted-foreground/40">·</span>
+                  <SourceLink href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" label="McKinsey" />
                 </p>
               </div>
             </motion.div>
@@ -533,8 +572,8 @@ function Lens01Page() {
               <p className="relative text-sm text-muted-foreground mb-6">
                 They tie outcomes to revenue, build governance before scaling, and treat AI as organisational redesign.
               </p>
-              <p className="relative text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground border-t border-card-border pt-4">
-                PwC AI Performance Study, 2026
+              <p className="relative text-[10px] font-mono uppercase tracking-[0.22em] border-t border-card-border pt-4">
+                <SourceLink href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" label="PwC AI Performance Study, 2026" />
               </p>
             </motion.div>
           </div>
