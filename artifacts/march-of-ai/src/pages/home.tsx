@@ -20,7 +20,6 @@ const NAV_SECTIONS = [
   { label: "03", title: "Readiness",       pageIndex: 6 },
   { label: "04", title: "Three Lenses",    pageIndex: 9 },
   { label: "05", title: "Five Questions",  pageIndex: 14 },
-  { label: "06", title: "Outlook",         pageIndex: 16 },
 ];
 
 /* ─── Animation primitives ────────────────────────────────────────────── */
@@ -288,7 +287,7 @@ function SignalPage() {
               You hear about AI from vendors, your team, your peers, your board, your kids. The capability is real. The demos are real. Most enterprise AI projects do not move the P&L. You do not need to become a technologist. You need a way to tell signal from noise.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl">
             <StatCard
               value="95%"
               label="of GenAI pilots fail to scale."
@@ -302,13 +301,6 @@ function SignalPage() {
               source="S&P Global"
               sourceHref="https://www.spglobal.com/market-intelligence/en/news-insights/research/ai-experiences-rapid-adoption-but-with-mixed-outcomes-highlights-from-vote-ai-machine-learning"
               delay={0.18}
-            />
-            <StatCard
-              value="5%"
-              label="of companies achieve rapid revenue acceleration."
-              source="MIT"
-              sourceHref="https://nanda.media.mit.edu/"
-              delay={0.26}
             />
           </div>
         </div>
@@ -325,7 +317,7 @@ function CapabilityGapPage() {
   const rows = [
     { num: "01", label: "Access",    icon: Lock,        demo: "Claude on my phone, no approval",         prod: "AI tools awaiting approval" },
     { num: "02", label: "Agents",    icon: Bot,         demo: "Computer use, unrestricted",              prod: "Computer use blocked by policy" },
-    { num: "03", label: "Data",      icon: Database,    demo: "Pull from any source on the web",         prod: "No agent access to internal data" },
+    { num: "03", label: "Data",      icon: Database,    demo: "Pull from any source on the web",         prod: "Scattered, inconsistent data" },
     { num: "04", label: "Approvals", icon: ShieldCheck, demo: "One decision-maker, me",                  prod: "Brand, legal, compliance gating" },
     { num: "05", label: "Time",      icon: Clock,       demo: "2.5 hours",                                prod: "Months" },
   ];
@@ -406,8 +398,8 @@ function ProcessFramePage() {
     {
       icon: GraduationCap,
       tag: "People",
-      title: "Educated and capable",
-      body: "Not one-time training. Continuous education in what we measure, why it matters, how to read the signal.",
+      title: "Trained and capable",
+      body: "Not one-time training. Continuous job-specific education in what we measure, why it matters, and how to find signal.",
     },
     {
       icon: Database,
@@ -623,7 +615,7 @@ function Lens02Page() {
   const cards = [
     { icon: MessageSquare, label: "Voice",      sub: "Calls, transcripts, sentiment, intent, voice of customer" },
     { icon: FileText,      label: "Documents",  sub: "Contracts, complaints, policies, accuracy checks" },
-    { icon: Briefcase,     label: "Operations", sub: "Outcomes, claims, finance, employee signals" },
+    { icon: Briefcase,     label: "Know-how",   sub: "Processes, procedures, policies" },
   ];
   return (
     <PageShell>
@@ -775,65 +767,6 @@ function FiveQuestionsPage() {
   );
 }
 
-function Section06Divider() {
-  return <ChapterDivider number="06" title="Where this is heading." subtitle="Three observations. Grounded, not speculative." />;
-}
-
-function ThreeObservationsPage() {
-  const items = [
-    {
-      num: "01",
-      title: "Transformative change is real. Readiness decides who benefits.",
-      body: "Organisations with process clarity, data foundations, and educated teams are seeing meaningful returns. Those without are stalling. 79% of organisations report AI adoption challenges. 54% of C-suite say it is tearing the company apart.",
-    },
-    {
-      num: "02",
-      title: "Capability isn't the constraint. Deployment is.",
-      body: "Models that do the work already exist. The gap is access, governance, integration, and a process worth measuring. These are leadership choices. The capability is the easy part.",
-    },
-    {
-      num: "03",
-      title: "Continuous education is the differentiator.",
-      body: "The biggest barrier to AI integration is workforce capability. Not a one-off programme. Continuous, job-specific education is what separates the 20% capturing 74% of the value from everyone else.",
-    },
-  ];
-  return (
-    <PageShell>
-      <div className="flex-1 flex flex-col justify-center px-4 pt-28 pb-12">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp(0)} className="mb-12">
-            <ChapterTag label="06 / Outlook" />
-            <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-4 tracking-tight leading-[1.05]">
-              Three things I think are true.
-            </h3>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {items.map((it, i) => (
-              <motion.div
-                key={it.num}
-                {...fadeUp(0.08 * i)}
-                className="rounded-3xl border border-border bg-card p-7 h-full"
-              >
-                <p className="text-6xl font-display font-bold text-primary/15 tracking-tighter leading-none mb-4">{it.num}</p>
-                <h4 className="text-xl font-display font-semibold mb-3 leading-snug">{it.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">{it.body}</p>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div {...fadeUp(0.32)} className="rounded-2xl bg-card-elevated border border-primary/30 p-10 md:p-14 text-center relative overflow-hidden">
-            <div className="absolute -top-20 -left-20 h-56 w-56 rounded-full bg-primary/[0.08] blur-3xl" />
-            <div className="absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-primary/[0.06] blur-3xl" />
-            <p className="relative text-[10px] font-mono uppercase tracking-[0.32em] text-primary mb-5">The kicker</p>
-            <p className="relative text-2xl md:text-4xl lg:text-5xl font-display font-semibold leading-[1.1] max-w-4xl mx-auto tracking-tight">
-              The first organisation in your industry to fix the foundations <span className="text-primary">wins</span>. The second <span className="text-foreground/70">struggles</span>. The third <span className="text-muted-foreground">gets acquired</span>.
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </PageShell>
-  );
-}
-
 function ContactPage() {
   return (
     <PageShell>
@@ -891,9 +824,7 @@ const PAGE_COMPONENTS = [
   Lens03Page,                // 13
   Section05Divider,          // 14
   FiveQuestionsPage,         // 15
-  Section06Divider,          // 16
-  ThreeObservationsPage,     // 17
-  ContactPage,               // 18
+  ContactPage,               // 16
 ];
 
 /* ─── Root ─────────────────────────────────────────────────────────── */
