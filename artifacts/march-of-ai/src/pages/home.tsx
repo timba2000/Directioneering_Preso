@@ -174,8 +174,9 @@ function HeroPage() {
           <motion.div {...fadeUp(0.24)} className="flex flex-col sm:flex-row gap-4 mb-20">
             <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
               <a
-                href={`${import.meta.env.BASE_URL}march-of-ai.pptx`}
-                download="march-of-ai.pptx"
+                href="https://docs.google.com/presentation/d/1NJEUEkeiT0qaxTjveRKrAKHWQrGVmXQSJElUhWUJbKI/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-testid="button-download"
               >
                 <Download className="mr-2 h-5 w-5" /> Download Keynote Deck
