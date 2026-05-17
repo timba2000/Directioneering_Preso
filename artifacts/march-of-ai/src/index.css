@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -39,10 +39,9 @@
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-destructive-border: var(--destructive-border);
 
-  --font-sans: var(--app-font-sans);
-  --font-serif: var(--app-font-serif);
-  --font-mono: var(--app-font-mono);
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+  --font-mono: 'Poppins', monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -50,62 +49,51 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* WeDoAI — deck-matched palette
-   #0B2A45 deep navy background
-   #07344F lifted navy surface
-   #143A57 elevated card / chip
-   #2BCFCF bright teal accent
-   #A8B5C2 light blue-grey muted text
-   #F1F0EE warm cream primary text
+/* WeDoAI brand — matched to wedoai.com.au
+   Near-black slate canvas + violet/cyan duotone glow.
 */
 :root {
-  /* Deep navy background, warm cream foreground */
-  --background: 210 71% 16%;          /* #0B2A45 */
-  --foreground: 40 11% 94%;            /* #F1F0EE */
+  --background: 222 47% 4%;             /* #020617 slate-950 */
+  --foreground: 213 31% 91%;            /* #dbeafe slate-200 */
 
-  /* Borders — quiet mid-navy lines */
-  --border: 210 55% 22%;               /* ~#143A57 */
-  --input: 210 55% 22%;
-  --ring: 180 60% 49%;                 /* teal focus */
+  --border: 215 28% 17%;                /* slate-800 */
+  --input: 215 28% 17%;
+  --ring: 259 94% 63%;                  /* violet focus */
 
-  /* Cards: a single elevated navy surface */
-  --card: 207 80% 17%;                 /* #07344F lifted */
-  --card-foreground: 40 11% 94%;
-  --card-border: 210 55% 22%;
-  --card-elevated: 210 60% 21%;        /* #143A57 — for inner panels */
+  /* Cards: translucent dark navy for glass effect */
+  --card: 222 47% 11%;                  /* #0f172a slate-900 */
+  --card-foreground: 213 31% 91%;
+  --card-border: 215 28% 17%;
+  --card-elevated: 217 33% 17%;         /* slate-800 lifted */
 
-  --popover: 207 80% 17%;
-  --popover-foreground: 40 11% 94%;
-  --popover-border: 210 55% 22%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 213 31% 91%;
+  --popover-border: 215 28% 17%;
 
-  /* Primary = teal */
-  --primary: 180 60% 49%;              /* #2BCFCF */
-  --primary-foreground: 210 71% 12%;   /* dark navy text on teal buttons */
-  --primary-border: 180 60% 49%;
+  /* Primary = violet #7c3aed */
+  --primary: 259 94% 63%;
+  --primary-foreground: 213 31% 96%;
+  --primary-border: 259 94% 63%;
 
-  /* Secondary = mid-navy chip */
-  --secondary: 210 60% 21%;            /* #143A57 */
-  --secondary-foreground: 213 19% 71%; /* light blue-grey */
-  --secondary-border: 210 55% 25%;
+  /* Secondary = slate chip */
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 213 31% 91%;
+  --secondary-border: 215 28% 22%;
 
-  /* Muted = same as secondary, quieter foreground */
-  --muted: 210 60% 21%;
-  --muted-foreground: 213 19% 71%;     /* #A8B5C2 */
-  --muted-border: 210 55% 22%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 16% 65%;      /* slate-400 */
+  --muted-border: 215 28% 17%;
 
-  /* Accent = teal mirror (monochromatic accent system) */
-  --accent: 180 60% 49%;
-  --accent-foreground: 210 71% 12%;
-  --accent-border: 180 60% 49%;
+  /* Accent = cyan #22d3ee */
+  --accent: 189 94% 67%;
+  --accent-foreground: 222 47% 8%;
+  --accent-border: 189 94% 67%;
 
-  /* Destructive — keep a warm warning red */
-  --destructive: 358 65% 60%;
-  --destructive-foreground: 40 11% 94%;
-  --destructive-border: 358 65% 60%;
+  /* Destructive — warm pink/red */
+  --destructive: 4 82% 63%;
+  --destructive-foreground: 213 31% 96%;
+  --destructive-border: 4 82% 63%;
 
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: 'Inter', monospace;
   --radius: 0.75rem;
 }
 
@@ -113,16 +101,63 @@
   * {
     @apply border-border;
   }
+  html, body {
+    background: hsl(var(--background));
+  }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
     font-feature-settings: "ss01", "cv11";
+    /* Dual radial glow signature — violet top-left, cyan bottom-right */
+    background-image:
+      radial-gradient(80% 60% at 18% 12%, hsla(259, 94%, 63%, 0.18), transparent 60%),
+      radial-gradient(70% 60% at 82% 88%, hsla(189, 94%, 67%, 0.14), transparent 65%),
+      radial-gradient(100% 100% at 50% 50%, hsla(222, 47%, 6%, 0.4), hsl(222, 47%, 4%));
+    background-attachment: fixed;
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
   }
-  /* Selection styling */
   ::selection {
-    background-color: hsl(var(--primary) / 0.3);
+    background-color: hsl(var(--primary) / 0.35);
     color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  /* Glow shadows */
+  .glow-violet {
+    box-shadow: 0 0 25px hsla(259, 94%, 63%, 0.35), 0 8px 32px hsla(259, 94%, 63%, 0.18);
+  }
+  .glow-cyan {
+    box-shadow: 0 0 22px hsla(189, 94%, 67%, 0.35), 0 8px 28px hsla(189, 94%, 67%, 0.16);
+  }
+  .glow-duo {
+    box-shadow:
+      0 0 30px hsla(259, 94%, 63%, 0.25),
+      0 0 60px hsla(189, 94%, 67%, 0.15),
+      0 12px 40px hsla(222, 47%, 4%, 0.6);
+  }
+
+  /* Glass surfaces */
+  .glass {
+    background: hsla(222, 47%, 11%, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsla(215, 28%, 25%, 0.45);
+  }
+  .glass-elevated {
+    background: hsla(217, 33%, 17%, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsla(259, 94%, 63%, 0.22);
+  }
+
+  /* Gradient text helper */
+  .gradient-text {
+    background-image: linear-gradient(135deg, hsl(259, 94%, 70%), hsl(189, 94%, 67%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }

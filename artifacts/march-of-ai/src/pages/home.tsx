@@ -42,26 +42,35 @@ const fadeUp = (delay = 0) => ({
 
 function PageShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-screen flex flex-col overflow-y-auto overflow-x-hidden bg-background text-foreground">
-      <BackdropAtmosphere />
+    <div className="relative min-h-screen flex flex-col overflow-y-auto overflow-x-hidden text-foreground">
       <div className="relative flex-1 flex flex-col">{children}</div>
     </div>
   );
 }
 
-function BackdropAtmosphere() {
+function IconBadge({ icon: Icon, size = "md", tone = "violet" }: { icon: React.ComponentType<{ className?: string }>; size?: "sm" | "md" | "lg"; tone?: "violet" | "cyan" | "duo" }) {
+  const sizes = {
+    sm: { box: "h-9 w-9", icon: "h-4 w-4", radius: "rounded-lg" },
+    md: { box: "h-12 w-12", icon: "h-5 w-5", radius: "rounded-xl" },
+    lg: { box: "h-14 w-14", icon: "h-6 w-6", radius: "rounded-2xl" },
+  };
+  const tones = {
+    violet: "bg-gradient-to-br from-primary/30 to-primary/5 text-primary border border-primary/30 shadow-[0_0_20px_hsla(259,94%,63%,0.25)]",
+    cyan:   "bg-gradient-to-br from-accent/30 to-accent/5 text-accent border border-accent/30 shadow-[0_0_20px_hsla(189,94%,67%,0.25)]",
+    duo:    "bg-gradient-to-br from-primary/25 via-accent/15 to-accent/25 text-foreground border border-primary/30 shadow-[0_0_22px_hsla(259,94%,63%,0.25),0_0_22px_hsla(189,94%,67%,0.15)]",
+  };
+  const s = sizes[size];
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -top-40 -right-40 h-[36rem] w-[36rem] rounded-full bg-primary/[0.04] blur-3xl" />
-      <div className="absolute -bottom-48 -left-40 h-[28rem] w-[28rem] rounded-full bg-primary/[0.025] blur-3xl" />
-    </div>
+    <span className={`inline-flex items-center justify-center shrink-0 ${s.box} ${s.radius} ${tones[tone]}`}>
+      <Icon className={s.icon} />
+    </span>
   );
 }
 
 function ChapterTag({ label, accent = false }: { label: string; accent?: boolean }) {
   return (
-    <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono tracking-[0.22em] uppercase ${accent ? "bg-primary/10 text-primary border border-primary/30" : "bg-secondary text-secondary-foreground border border-secondary-border"}`}>
-      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+    <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] tracking-[0.22em] uppercase font-medium ${accent ? "bg-gradient-to-r from-primary/15 to-accent/15 text-foreground border border-primary/30 shadow-[0_0_18px_hsla(259,94%,63%,0.18)]" : "bg-card/60 backdrop-blur-md text-muted-foreground border border-card-border"}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-primary to-accent" />
       {label}
     </div>
   );
@@ -71,10 +80,11 @@ function StatCard({ value, label, source, sourceHref, delay = 0 }: { value: stri
   return (
     <motion.div
       {...fadeUp(delay)}
-      whileHover={{ y: -4 }}
-      className="group relative overflow-hidden p-7 md:p-8 rounded-2xl bg-card border border-card-border transition-all hover:border-primary/40 flex flex-col h-full"
+      whileHover={{ y: -6 }}
+      className="group relative overflow-hidden p-7 md:p-8 rounded-2xl glass transition-all hover:border-primary/40 hover:shadow-[0_0_32px_hsla(259,94%,63%,0.25)] flex flex-col h-full"
     >
-      <div className="relative text-6xl md:text-7xl lg:text-8xl font-display font-bold text-primary mb-5 tracking-tighter leading-[0.85]">
+      <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-primary/[0.10] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="relative text-6xl md:text-7xl lg:text-8xl font-display font-bold gradient-text mb-5 tracking-tighter leading-[0.85]">
         {value}
       </div>
       <p className="relative text-foreground font-normal text-base md:text-lg mb-8 flex-grow leading-snug">{label}</p>
@@ -124,12 +134,21 @@ function ChapterDivider({ number, title, subtitle }: { number: string; title: st
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="absolute -top-24 -left-4 md:-left-8 text-[22rem] md:text-[32rem] lg:text-[40rem] font-display font-bold leading-none tracking-tighter text-primary/[0.06] select-none pointer-events-none">
+            <div
+              className="absolute -top-24 -left-4 md:-left-8 text-[22rem] md:text-[32rem] lg:text-[40rem] font-display font-bold leading-none tracking-tighter select-none pointer-events-none"
+              style={{
+                backgroundImage: "linear-gradient(135deg, hsla(259, 94%, 63%, 0.14), hsla(189, 94%, 67%, 0.08))",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+              aria-hidden
+            >
               {number}
             </div>
             <div className="relative">
-              <p className="font-mono text-[11px] tracking-[0.32em] uppercase text-primary mb-6">
-                Chapter — {number}
+              <p className="text-[11px] tracking-[0.32em] uppercase mb-6 font-medium">
+                <span className="gradient-text font-semibold">Chapter — {number}</span>
               </p>
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[1.0] mb-8 max-w-5xl">
                 {title}
@@ -159,9 +178,9 @@ function HeroPage() {
             {...fadeUp(0.08)}
             className="text-6xl md:text-8xl lg:text-[9.5rem] font-display font-bold tracking-tighter leading-[0.95] mt-8 mb-8"
           >
-            The March<br />of <span className="relative inline-block text-primary">
-              AI
-              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-primary/40" aria-hidden />
+            The March<br />of <span className="relative inline-block">
+              <span className="gradient-text">AI</span>
+              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full" aria-hidden />
             </span>.
           </motion.h1>
           <motion.p
@@ -171,7 +190,7 @@ function HeroPage() {
             A calibration tool, not a tour. Three lenses, five questions, and one readiness gap most organisations have not closed.
           </motion.p>
           <motion.div {...fadeUp(0.24)} className="flex flex-col sm:flex-row gap-4 mb-20">
-            <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
+            <Button size="lg" className="text-base h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_hsla(259,94%,63%,0.4)] hover:shadow-[0_0_40px_hsla(259,94%,63%,0.55)] transition-shadow" asChild>
               <a
                 href="https://docs.google.com/presentation/d/1NJEUEkeiT0qaxTjveRKrAKHWQrGVmXQSJElUhWUJbKI/edit?usp=sharing"
                 target="_blank"
@@ -202,7 +221,7 @@ function HeroPage() {
           </motion.div>
           <motion.div {...fadeUp(0.36)} className="pt-8 border-t border-card-border flex items-baseline gap-6 flex-wrap">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-primary mb-2">Presented by</p>
+              <p className="text-[10px] uppercase tracking-[0.32em] mb-2 font-semibold gradient-text">Presented by</p>
               <p className="text-2xl font-display font-semibold">
                 Tim Barnes
               </p>
@@ -241,16 +260,14 @@ function HowIBuiltThisPage() {
               <motion.div
                 key={s.num}
                 {...fadeUp(0.08 * i)}
-                whileHover={{ y: -3 }}
-                className="relative rounded-2xl bg-card border border-card-border p-5 overflow-hidden"
+                whileHover={{ y: -4 }}
+                className="group relative rounded-2xl glass p-5 overflow-hidden transition-all hover:border-primary/40 hover:shadow-[0_0_24px_hsla(259,94%,63%,0.25)]"
               >
-                <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-primary/8" />
+                <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-primary/[0.08] group-hover:bg-primary/[0.15] transition-colors" />
                 <div className="relative">
-                  <p className="text-3xl font-display font-bold text-primary/30 tracking-tighter mb-2">{s.num}</p>
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
-                    <s.icon className="h-4 w-4" />
-                  </span>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-1">{s.label}</p>
+                  <p className="text-3xl font-display font-bold gradient-text tracking-tighter mb-3 opacity-60">{s.num}</p>
+                  <div className="mb-3"><IconBadge icon={s.icon} size="sm" tone={i % 2 === 0 ? "violet" : "cyan"} /></div>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-1 font-medium">{s.label}</p>
                   <p className="text-base font-semibold">{s.time}</p>
                 </div>
               </motion.div>
@@ -259,7 +276,7 @@ function HowIBuiltThisPage() {
           <motion.div {...fadeUp(0.5)} className="rounded-2xl bg-card-elevated border border-primary/25 p-7 md:p-8 relative overflow-hidden">
             <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
             <p className="text-lg md:text-xl font-display leading-snug">
-              <span className="text-primary font-semibold">Easy</span> for one person with AI agents. <span className="text-muted-foreground mx-1">/</span> <span className="text-foreground font-semibold">Hard</span> at enterprise scale. That gap is what this talk is about.
+              <span className="gradient-text font-semibold">Easy</span> for one person with AI agents. <span className="text-muted-foreground mx-1">/</span> <span className="text-foreground font-semibold">Hard</span> at enterprise scale. That gap is what this talk is about.
             </p>
           </motion.div>
         </div>
@@ -281,7 +298,7 @@ function SignalPage() {
             <ChapterTag label="01 / Signal vs Noise" />
             <h3 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-6 tracking-tight leading-[1.05]">
               You are not short on AI.<br />
-              <span className="text-primary">You are short on signal.</span>
+              <span className="gradient-text">You are short on signal.</span>
             </h3>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               You hear about AI from vendors, your team, your peers, your board, your kids. The capability is real. The demos are real. Most enterprise AI projects do not move the P&L. You do not need to become a technologist. You need a way to tell signal from noise.
@@ -335,9 +352,9 @@ function CapabilityGapPage() {
             </p>
           </motion.div>
 
-          <motion.div {...fadeUp(0.1)} className="rounded-3xl border border-card-border bg-card overflow-hidden">
+          <motion.div {...fadeUp(0.1)} className="rounded-3xl glass overflow-hidden">
             {/* Header row */}
-            <div className="grid grid-cols-12 gap-0 px-5 md:px-8 py-4 bg-secondary/40 border-b border-card-border text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="grid grid-cols-12 gap-0 px-5 md:px-8 py-4 bg-card-elevated/40 border-b border-card-border text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-medium">
               <div className="col-span-4 md:col-span-3" />
               <div className="col-span-4 md:col-span-4 lg:col-span-4 flex items-center gap-2">
                 <XCircle className="h-3 w-3 text-destructive" /> The Demo
@@ -354,11 +371,9 @@ function CapabilityGapPage() {
                 className={`grid grid-cols-12 gap-3 md:gap-0 px-5 md:px-8 py-5 items-center ${i < rows.length - 1 ? "border-b border-card-border" : ""}`}
               >
                 <div className="col-span-12 md:col-span-3 flex items-center gap-3 mb-2 md:mb-0">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
-                    <r.icon className="h-4 w-4" />
-                  </span>
+                  <IconBadge icon={r.icon} size="sm" tone={i % 2 === 0 ? "violet" : "cyan"} />
                   <div>
-                    <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">{r.num}</p>
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-medium">{r.num}</p>
                     <p className="font-display font-semibold text-base">{r.label}</p>
                   </div>
                 </div>
@@ -425,26 +440,27 @@ function ProcessFramePage() {
             </h3>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {pillars.map((p, i) => (
-              <motion.div
-                key={p.tag}
-                {...fadeUp(0.06 * i)}
-                whileHover={{ y: -4 }}
-                className="group relative overflow-hidden rounded-3xl bg-card border border-card-border p-6 transition-shadow hover:shadow-md"
-              >
-                <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-                <div className="relative">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-                    <p.icon className="h-5 w-5" />
-                  </span>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-2">{p.tag}</p>
-                  <h4 className="text-lg font-display font-semibold mb-2 leading-snug">{p.title}</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
-                </div>
-              </motion.div>
-            ))}
+            {pillars.map((p, i) => {
+              const tones: ("violet" | "cyan")[] = ["violet", "cyan", "violet", "cyan"];
+              return (
+                <motion.div
+                  key={p.tag}
+                  {...fadeUp(0.06 * i)}
+                  whileHover={{ y: -6 }}
+                  className="group relative overflow-hidden rounded-3xl glass p-6 transition-all hover:border-primary/40 hover:shadow-[0_0_28px_hsla(259,94%,63%,0.22)]"
+                >
+                  <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/[0.08] group-hover:bg-primary/[0.15] transition-colors blur-md" />
+                  <div className="relative">
+                    <div className="mb-4"><IconBadge icon={p.icon} size="md" tone={tones[i]} /></div>
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2 font-medium">{p.tag}</p>
+                    <h4 className="text-lg font-display font-semibold mb-2 leading-snug">{p.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
-          <motion.p {...fadeUp(0.36)} className="mt-8 text-sm uppercase tracking-[0.22em] text-muted-foreground text-center">
+          <motion.p {...fadeUp(0.36)} className="mt-8 text-sm uppercase tracking-[0.22em] text-muted-foreground text-center font-medium">
             <Sparkles className="inline h-4 w-4 mr-2 text-accent" />
             If any of these are missing, AI runs on broken inputs.
           </motion.p>
@@ -473,15 +489,16 @@ function MeasurePage() {
               </div>
             </motion.div>
             <motion.div {...fadeUp(0.18)} className="relative">
-              <div className="relative rounded-3xl bg-card border border-card-border p-10 overflow-hidden">
-                <div className="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-primary/8 blur-2xl" />
-                <p className="text-[8rem] md:text-[11rem] font-display font-bold text-primary leading-[0.85] tracking-tighter mb-4 relative">
+              <div className="relative rounded-3xl glass-elevated p-10 overflow-hidden shadow-[0_0_40px_hsla(259,94%,63%,0.18)]">
+                <div className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-primary/[0.12] blur-3xl" />
+                <div className="absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-accent/[0.10] blur-3xl" />
+                <p className="text-[8rem] md:text-[11rem] font-display font-bold gradient-text leading-[0.85] tracking-tighter mb-4 relative">
                   70%
                 </p>
                 <p className="text-base md:text-lg font-medium leading-snug mb-6 relative">
                   of AI project failures trace to data and process problems, not algorithms.
                 </p>
-                <p className="text-[10px] font-mono uppercase tracking-[0.22em] border-t border-border pt-4 relative flex flex-wrap items-center gap-x-2 gap-y-1">
+                <p className="text-[10px] uppercase tracking-[0.22em] border-t border-card-border pt-4 relative flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
                   <SourceLink href="https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk" label="Gartner" />
                   <span className="text-muted-foreground/40">·</span>
                   <SourceLink href="https://www.deloitte.com/us/en/services/consulting/research/state-of-generative-ai-in-enterprise.html" label="Deloitte" />
@@ -518,25 +535,26 @@ function ThreeLensesOverviewPage() {
             </h3>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-5">
-            {lenses.map((l, i) => (
-              <motion.div
-                key={l.num}
-                {...fadeUp(0.08 * i)}
-                whileHover={{ y: -4 }}
-                className="group relative rounded-3xl bg-card border border-card-border p-7 overflow-hidden transition-shadow hover:shadow-md"
-              >
-                <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-                <div className="relative">
-                  <p className="text-7xl font-display font-bold text-primary/15 tracking-tighter leading-none mb-4">{l.num}</p>
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-                    <l.icon className="h-5 w-5" />
-                  </span>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-accent mb-1">{l.tag}</p>
-                  <h4 className="text-2xl font-display font-semibold mb-3">{l.title}</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{l.body}</p>
-                </div>
-              </motion.div>
-            ))}
+            {lenses.map((l, i) => {
+              const tones: ("violet" | "cyan" | "duo")[] = ["violet", "duo", "cyan"];
+              return (
+                <motion.div
+                  key={l.num}
+                  {...fadeUp(0.08 * i)}
+                  whileHover={{ y: -6 }}
+                  className="group relative rounded-3xl glass p-7 overflow-hidden transition-all hover:border-primary/40 hover:shadow-[0_0_32px_hsla(259,94%,63%,0.25)]"
+                >
+                  <div className="absolute -top-12 -right-12 h-36 w-36 rounded-full bg-primary/[0.10] group-hover:bg-primary/[0.18] transition-colors blur-2xl" />
+                  <div className="relative">
+                    <p className="text-7xl font-display font-bold tracking-tighter leading-none mb-4 gradient-text opacity-30">{l.num}</p>
+                    <div className="mb-4"><IconBadge icon={l.icon} size="md" tone={tones[i]} /></div>
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-accent mb-1 font-semibold">{l.tag}</p>
+                    <h4 className="text-2xl font-display font-semibold mb-3">{l.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{l.body}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
           <motion.div {...fadeUp(0.34)} className="mt-10 text-center">
             <p className="inline-block py-3 px-6 rounded-full bg-secondary text-secondary-foreground text-sm font-medium border border-secondary-border">
@@ -575,9 +593,10 @@ function Lens01Page() {
                 </p>
               </div>
             </motion.div>
-            <motion.div {...fadeUp(0.18)} className="relative rounded-2xl bg-card-elevated border border-primary/25 p-10 overflow-hidden">
-              <div className="absolute -top-16 -right-16 h-52 w-52 rounded-full bg-primary/[0.08] blur-3xl" />
-              <p className="relative text-[9rem] md:text-[13rem] font-display font-bold text-primary leading-[0.82] tracking-tighter mb-4">
+            <motion.div {...fadeUp(0.18)} className="relative rounded-3xl glass-elevated p-10 overflow-hidden shadow-[0_0_40px_hsla(259,94%,63%,0.2)]">
+              <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/[0.14] blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-accent/[0.12] blur-3xl" />
+              <p className="relative text-[9rem] md:text-[13rem] font-display font-bold gradient-text leading-[0.82] tracking-tighter mb-4">
                 74%
               </p>
               <p className="relative text-base md:text-lg font-medium leading-snug mb-6 text-foreground">
@@ -586,23 +605,21 @@ function Lens01Page() {
               <p className="relative text-sm text-muted-foreground mb-6">
                 They tie outcomes to revenue, build governance before scaling, and treat AI as organisational redesign.
               </p>
-              <p className="relative text-[10px] font-mono uppercase tracking-[0.22em] border-t border-card-border pt-4">
+              <p className="relative text-[10px] uppercase tracking-[0.22em] border-t border-card-border pt-4 font-medium">
                 <SourceLink href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" label="PwC AI Performance Study, 2026" />
               </p>
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.36)} className="mt-8 grid md:grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-card-border bg-card p-5 flex items-start gap-3">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent shrink-0 mt-0.5">
-                <CheckCircle2 className="h-4 w-4" />
-              </span>
-              <p className="text-sm md:text-base"><span className="font-semibold">Connected:</span> each pilot makes the next one stronger.</p>
+            <div className="rounded-2xl glass p-5 flex items-start gap-3">
+              <IconBadge icon={CheckCircle2} size="sm" tone="cyan" />
+              <p className="text-sm md:text-base mt-1.5"><span className="font-semibold">Connected:</span> each pilot makes the next one stronger.</p>
             </div>
-            <div className="rounded-2xl border border-card-border bg-card p-5 flex items-start gap-3">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-destructive/15 text-destructive shrink-0 mt-0.5">
+            <div className="rounded-2xl glass p-5 flex items-start gap-3">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-destructive/25 to-destructive/5 text-destructive border border-destructive/30 shrink-0 shadow-[0_0_18px_hsla(4,82%,63%,0.18)]">
                 <XCircle className="h-4 w-4" />
               </span>
-              <p className="text-sm md:text-base"><span className="font-semibold">Disconnected:</span> each pilot stands alone, then dies.</p>
+              <p className="text-sm md:text-base mt-1.5"><span className="font-semibold">Disconnected:</span> each pilot stands alone, then dies.</p>
             </div>
           </motion.div>
         </div>
@@ -634,15 +651,16 @@ function Lens02Page() {
             </p>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-5 mb-6">
-            {cards.map((c, i) => (
-              <motion.div key={c.label} {...fadeUp(0.16 + i * 0.06)} className="rounded-3xl bg-card border border-card-border p-6">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-                  <c.icon className="h-5 w-5" />
-                </span>
-                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-accent mb-2">{c.label}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{c.sub}</p>
-              </motion.div>
-            ))}
+            {cards.map((c, i) => {
+              const tones: ("violet" | "cyan" | "duo")[] = ["violet", "cyan", "duo"];
+              return (
+                <motion.div key={c.label} {...fadeUp(0.16 + i * 0.06)} whileHover={{ y: -4 }} className="rounded-3xl glass p-6 transition-all hover:border-primary/40 hover:shadow-[0_0_24px_hsla(259,94%,63%,0.22)]">
+                  <div className="mb-4"><IconBadge icon={c.icon} size="md" tone={tones[i]} /></div>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-accent mb-2 font-semibold">{c.label}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{c.sub}</p>
+                </motion.div>
+              );
+            })}
           </div>
           <motion.div {...fadeUp(0.4)} className="rounded-2xl bg-card-elevated border border-primary/25 p-7 md:p-8 relative overflow-hidden">
             <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
@@ -677,14 +695,14 @@ function Lens03Page() {
 
               {/* $ per task today/after viz */}
               <div className="mt-7 grid grid-cols-2 gap-4">
-                <div className="rounded-2xl bg-secondary border border-secondary-border p-5 text-center">
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground mb-2">Today</p>
+                <div className="rounded-2xl glass p-5 text-center">
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2 font-medium">Today</p>
                   <p className="text-4xl md:text-5xl font-display font-bold text-foreground tracking-tighter">$15</p>
                   <p className="text-xs text-muted-foreground mt-2">per task</p>
                 </div>
-                <div className="rounded-2xl bg-primary/10 border border-primary/30 p-5 text-center">
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-2">After</p>
-                  <p className="text-4xl md:text-5xl font-display font-bold text-primary tracking-tighter">$?</p>
+                <div className="rounded-2xl glass-elevated p-5 text-center shadow-[0_0_22px_hsla(259,94%,63%,0.2)]">
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2 font-semibold">After</p>
+                  <p className="text-4xl md:text-5xl font-display font-bold gradient-text tracking-tighter">$?</p>
                   <p className="text-xs text-muted-foreground mt-2">if they can't name it, it isn't real</p>
                 </div>
               </div>
@@ -748,14 +766,14 @@ function FiveQuestionsPage() {
               <motion.div
                 key={q.title}
                 {...fadeUp(0.06 * i)}
-                whileHover={{ x: 6, borderColor: "hsl(var(--primary) / 0.4)" }}
-                className="bg-card border border-card-border p-5 md:p-6 rounded-2xl flex items-center gap-5 transition-all"
+                whileHover={{ x: 6 }}
+                className="glass p-5 md:p-6 rounded-2xl flex items-center gap-5 transition-all hover:border-primary/40 hover:shadow-[0_0_28px_hsla(259,94%,63%,0.22)]"
               >
-                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground font-display font-bold text-xl shrink-0">
+                <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground font-display font-bold text-xl shrink-0 shadow-[0_0_22px_hsla(259,94%,63%,0.4)]">
                   {i + 1}
                 </div>
                 <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary mb-1">{q.title}</p>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-accent mb-1 font-semibold">{q.title}</p>
                   <p className="text-lg md:text-xl font-medium leading-snug text-foreground">{q.q}</p>
                 </div>
               </motion.div>
@@ -777,7 +795,7 @@ function ContactPage() {
               <Logo size="hero" />
             </div>
             <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-bold mb-6 tracking-tighter leading-[0.95]">
-              Questions.
+              <span className="gradient-text">Questions.</span>
             </h2>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10">
               Tim Barnes <span className="mx-2 text-border">|</span> AI and Automation Expert
@@ -847,7 +865,7 @@ export default function Home() {
   const isLast  = currentPage === PAGE_COMPONENTS.length - 1;
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
+    <div className="relative min-h-screen text-foreground overflow-hidden">
       <Navbar currentPage={currentPage} onNavigate={goTo} navSections={NAV_SECTIONS} totalPages={PAGE_COMPONENTS.length} />
 
       <AnimatePresence mode="wait" custom={direction}>
@@ -865,7 +883,7 @@ export default function Home() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-t border-border">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-t border-border">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between max-w-6xl gap-4">
           <Button
             variant="outline"
